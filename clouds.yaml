@@ -1,0 +1,565 @@
+alexa:
+  filter:
+    include_entities:
+      - input_boolean.enable_alarm_system
+      - input_boolean.fetch_email
+      - cover.left_blinds
+      - cover.right_blinds
+      - cover.both_blinds
+      - cover.office_blinds
+      - cover.workshop_blinds
+      - cover.bedroom_curtain
+      - cover.kitchen_curtain
+      - cover.living_room_curtain
+      - cover.small_window
+      - fan.fan
+      - fan.utility_fan
+      - fan.humidifier
+      - fan.bedroom_ventilator
+      - switch.short_toilet_flush
+      - switch.long_toilet_flush
+      - light.almost
+      - light.entire_house
+      - light.bed_diane
+      - light.bed_kenneth
+      - light.bench_left
+      - light.bench_right
+      - light.best
+      - light.ceiling_1
+      - light.ceiling_2
+      - light.ceiling_3
+      - light.closet
+      - light.computer
+      - light.floor_lamp
+      - light.hallway
+      - light.kitchen_table
+      - light.makeup
+      - light.microwave
+      - light.mirror_left
+      - light.mirror_right
+      - light.ph
+      - light.shelf_system_left
+      - light.shelf_system_right
+      - light.shower
+      - light.sink_left
+      - light.sink_right
+      - light.sofa
+      - light.strip
+      - light.terrace
+      - light.toilet
+      - light.utility_ceiling
+      - light.vitrine
+      - light.bench_center
+      - light.entrance_ceiling
+      - light.hood
+      - light.office_panel
+      - light.shelf_system_low
+      - light.washer_dryer
+      - light.workshop_ceiling
+      - light.magic_mirror
+      - light.xmas
+      - sensor.patio_temperature_hue
+      - sensor.backyard_temperature_hue
+      - sensor.living_room_temperature
+      - sensor.entrance_temperature
+      - sensor.hallway_temperature
+      - sensor.kitchen_temperature
+      - sensor.bedroom_temperature
+      - sensor.bathroom_temperature
+      - sensor.utility_temperature
+      - sensor.workshop_temperature
+      - sensor.humidifier_temperature
+      - sensor.humidifier_humidity
+      - binary_sensor.test_trigger
+      - camera.camera_1
+      - camera.camera_2
+      - camera.camera_3
+      - camera.camera_4
+      - camera.camera_5
+      - camera.camera_6
+
+  entity_config:
+    binary_sensor.test_trigger:
+      name: Test Trigger
+    input_boolean.enable_alarm_system:
+      name: Alarm System
+    input_boolean.fetch_email:
+      name: Fetch Email
+      description: Fetch email now
+    cover.left_blinds:
+      name: Left Blinds
+      description: Left blinds in Living Room
+    cover.right_blinds:
+      name: Right Blinds
+      description: Right blinds in Living Room
+    cover.both_blinds:
+      name: Both Blinds
+      description: Both blinds in Living Room
+    cover.office_blinds:
+      name: Office Blinds
+      description: Blinds in the office
+    cover.workshop_blinds:
+      name: Workshop Blinds
+      description: Blinds in the workshop
+    cover.bedroom_curtain:
+      name: Bedroom Curtains
+      description: Curtains in the bedroom
+    cover.kitchen_curtain:
+      name: Kitchen Curtain
+      description: Curtains in the kitchen
+    cover.living_room_curtain:
+      name: Living Room Curtain
+      description: Curtain At Patio Door
+    cover.small_window:
+      name: Small Window
+      description: Window over patio door
+    fan.fan:
+      name: Fan
+      description: Bathroom fan
+    fan.utility_fan:
+      name: Utility Fan
+      description: Utility Room Fan
+    fan.humidifier:
+      name: Humidifier
+      description: Big Humidifier
+    fan.bedroom_ventilator:
+      name: Bedroom Ventilator
+      description: Ventilator in bedroom wall
+    switch.short_toilet_flush:
+      name: Short Toilet Flush
+      description: Flush toilet short
+    switch.long_toilet_flush:
+      name: Long Toilet Flush
+      description: Flush toilet long
+    light.almost:
+      name: Almost All Lights
+      description: All lights except Bathroom
+    light.entire_house:
+      name: Entire House
+      description: All lights in the house
+    light.bed_diane:
+      name: Bed Diane
+      description: Bed Lamp Diane
+    light.bed_kenneth:
+      name: Bed Kenneth
+      description: Bed Lamp Kenneth
+    light.bench_left:
+      name: Bench Left
+      description: Workbench Lamp Left
+    light.bench_right:
+      name: Bench Right
+      description: Workbench Lamp Right
+    light.best:
+      name: Best
+      description: Fancy Lamp Living Room
+    light.ceiling_1:
+      name: Ceiling 1
+      description: Ceiling 1 in Bedroom
+    light.ceiling_2:
+      name: Ceiling 2
+      description: Celing 2 in Bedroom
+    light.ceiling_3:
+      name: Ceiling 3
+      description: Ceiling 3 in Bedroom
+    light.closet:
+      name: Closet
+      description: Bedroom Closet
+    light.computer:
+      name: Computer
+      description: Computer Lamp Office
+    light.floor_lamp:
+      name: Floor Lamp
+      description: Floor Lamp Living Room
+    light.hallway:
+      name: Hallway
+      description: Hallway Light
+    light.kitchen_table:
+      name: Kitchen Table
+      description: LED Strip over Kitchen Table
+    light.makeup:
+      name: Makeup
+      description: Makeup Table Lamp
+    light.microwave:
+      name: Microwave
+      description: Lamp at Microwave
+    light.mirror_left:
+      name: Mirror Left
+      description: Mirror Left in Bathroom
+    light.mirror_right:
+      name: Mirror Right
+      description: Mirror Right in Bathroom
+    light.ph:
+      name: PH
+      description: PH5 Lamp
+    light.shelf_system_left:
+      name: Shelf System Left
+      description: Shelf System Left Livingroom
+    light.shelf_system_right:
+      name: Shelf System Right
+      description: Shelf System Right Livingroom
+    light.shower:
+      name: Shower
+      description: Lamp near Shower
+    light.sink_left:
+      name: Sink Left
+      description: Left Sink Kitchen
+    light.sink_right:
+      name: Sink Right
+      description: Right Sink Kitchen
+    light.sofa:
+      name: Sofa
+      description: Sofa Lamp IKEA
+    light.strip:
+      name: Strip
+      description: LED Strip Living Room
+    light.terrace:
+      name: Terrace
+      description: Ceiling Lamp Patio
+    light.toilet:
+      name: Toilet
+      description: Lamp near toilet in bathroom
+    light.utility_ceiling:
+      name: Utility Ceiling
+      description: Ceiling light in utility room 
+    light.vitrine:
+      name: Vitrine
+      description: Lamp over Vitrine in Kitchen
+    light.magic_mirror:
+      name: Magic Mirror
+      description: Magic Mirror in Bedroom
+    light.bench_center:
+      name: Bench Center
+      description: Bench Center Workshop
+    light.entrance_ceiling:
+      name: Entrance Ceiling
+      description: Entrance Ceiling
+    light.hood:
+      name: Hood
+      description: Hood Kitchen
+    light.office_panel:
+      name: Office Panel
+      description: Office Panel
+    light.shelf_system_low:
+      name: Shelf System Low
+      description: Shelf System Low Living Room
+    light.washer_dryer:
+      name: Washer Dryer
+      description: Washer dryer light in Utility Room
+    light.workshop_ceiling:
+      name: Workshop Ceiling
+      description: Workshop Ceiling LEDs
+    light.xmas:
+      name: Christmas Lights
+      description: Christmas Lights
+    camera.camera_1:
+      name: Camera 1
+      description: Camera Office Window
+    camera.camera_2:
+      name: Camera 2
+      description: Camera Front Door
+    camera.camera_3:
+      name: Camera 3
+      description: Camera Living Room Window
+    camera.camera_4:
+      name: Camera 4
+      description: Camera Back Door
+    camera.camera_5:
+      name: Camera 5
+      description: Camera Workshop Window
+    camera.camera_6:
+      name: Camera 6
+      description: Camera Bedroom Window
+      
+google_actions:
+  filter:
+    include_entities:
+      - input_boolean.enable_alarm_system
+      - input_boolean.fetch_email
+      - cover.left_blinds
+      - cover.right_blinds
+      - cover.both_blinds
+      - cover.office_blinds
+      - cover.workshop_blinds
+      - cover.bedroom_curtain
+      - cover.kitchen_curtain
+      - cover.living_room_curtain
+      - cover.small_window
+      - fan.fan
+      - fan.utility_fan
+      - fan.humidifier
+      - fan.bedroom_ventilator
+      - switch.short_toilet_flush
+      - switch.long_toilet_flush
+      - light.almost
+      - light.entire_house
+      - light.bed_diane
+      - light.bed_kenneth
+      - light.bench_left
+      - light.bench_right
+      - light.best
+      - light.ceiling_1
+      - light.ceiling_2
+      - light.ceiling_3
+      - light.closet
+      - light.computer
+      - light.floor_lamp
+      - light.kitchen_table
+      - light.makeup
+      - light.microwave
+      - light.mirror_left
+      - light.mirror_right
+      - light.ph
+      - light.shelf_system_left
+      - light.shelf_system_right
+      - light.shower
+      - light.sink_left
+      - light.sink_right
+      - light.sofa
+      - light.strip
+      - light.terrace
+      - light.toilet
+      - light.utility_ceiling
+      - light.vitrine
+      - light.bench_center
+      - light.hood
+      - light.office_panel
+      - light.shelf_system_low
+      - light.washer_dryer
+      - light.workshop_ceiling
+      - light.magic_mirror
+      - light.hallway
+      - light.entrance_ceiling
+      - light.xmas
+      - sensor.patio_temperature_hue
+      - sensor.backyard_temperature_hue
+      - sensor.living_room_temperature
+      - sensor.entrance_temperature
+      - sensor.hallway_temperature
+      - sensor.kitchen_temperature
+      - sensor.bedroom_temperature
+      - sensor.bathroom_temperature
+      - sensor.utility_temperature
+      - sensor.workshop_temperature
+      - sensor.humidifier_humidity
+      - sensor.humidifier_temperature
+      - camera.camera_1
+      - camera.camera_2
+      - camera.camera_3
+      - camera.camera_4
+      - camera.camera_5
+      - camera.camera_6
+  entity_config:
+    input_boolean.enable_alarm_system:
+      name: Alarm System
+      room: Generic
+    input_boolean.fetch_email:
+      name: Fetch Email
+      room: Generic
+    cover.left_blinds:
+      name: Left Blinds
+      room: Generic
+    cover.right_blinds:
+      name: Right Blinds
+      room: Generic    
+    cover.both_blinds:
+      name: Both Blinds
+      aliases:
+        - 'Rubber Duck'
+      room: Generic
+    cover.office_blinds:
+      name: Office Blinds
+      room: Generic
+    cover.workshop_blinds:
+      name: Workshop Blinds
+      room: Generic
+    cover.bedroom_curtain:
+      name: Bedroom Curtains
+      aliases:
+        - "Bedroom Curtain"
+      room: Generic
+    cover.kitchen_curtain:
+      name: Kitchen Curtain
+      room: Generic
+    cover.living_room_curtain:
+      name: Living Room Curtain
+      room: Generic
+    cover.small_window:
+      name: Small Window
+      room: Generic
+    fan.fan:
+      name: Fan
+      room: Generic
+    fan.utility_fan:
+      name: Utility Fan
+      room: Generic
+    fan.humidifier:
+      name: Humidifier
+      room: Generic
+    fan.bedroom_ventilator:
+      name: Bedroom Ventilator
+      room: Generic
+    switch.short_toilet_flush:
+      name: Short Toilet Flush
+      room: Generic
+    switch.long_toilet_flush:
+      name: Long Toilet Flush
+      room: Generic
+    light.almost:
+      name: Almost All Lights
+      room: Generic
+    light.entire_house:
+      name: Entire House
+      room: Generic
+    light.bed_diane:
+      name: Bed Diane
+      room: Bedroom
+    light.bed_kenneth:
+      name: Bed Kenneth
+      room: Bedroom
+    light.bench_left:
+      name: Bench Left
+      room: Workshop
+    light.bench_right:
+      name: Bench Right
+      room: Workshop
+    light.best:
+      name: Best
+      room: Living Room
+    light.ceiling_1:
+      name: Ceiling 1
+      room: Bedroom
+    light.ceiling_2:
+      name: Ceiling 2
+      room: Bedroom
+    light.ceiling_3:
+      name: Ceiling 3
+      room: Bedroom
+    light.closet:
+      name: Closet
+      room: Closet
+    light.computer:
+      name: Computer
+      room: Office
+    light.floor_lamp:
+      name: Floor Lamp
+      room: Living Room
+    light.kitchen_table:
+      name: Kitchen Table
+      room: Kitchen
+    light.makeup:
+      name: Makeup
+      room: Office
+    light.microwave:
+      name: Microwave
+      room: Kitchen
+    light.mirror_left:
+      name: Mirror Left
+      room: Bathroom
+    light.mirror_right:
+      name: Mirror Right
+      room: Bathroom
+    light.ph:
+      name: PH
+      aliases:
+        - 'PH Lamp'
+      room: Living room
+    light.shelf_system_left:
+      name: Shelf System Left
+      room: Living Room
+    light.shelf_system_right:
+      name: Shelf System Right
+      room: Living Room
+    light.shower:
+      name: Shower
+      room: Bathroom
+    light.sink_left:
+      name: Sink Left
+      room: Kitchen
+    light.sink_right:
+      name: Sink Right
+      room: Kitchen
+    light.sofa:
+      name: Sofa
+      room: Living Room
+    light.strip:
+      name: Strip
+      room: Living Room
+    light.terrace:
+      name: Terrace
+      room: Patio
+    light.toilet:
+      name: Toilet
+      room: Bathroom
+    light.utility_ceiling:
+      name: Utility Ceiling
+      room: Utility Room
+    light.vitrine:
+      name: Vitrine
+      room: Generic
+    light.bench_center:
+      name: Bench Center
+      room: Workshop
+    light.entrance_ceiling:
+      name: Entrance Ceiling
+      room: Entrance
+    light.hood:
+      name: Hood
+      room: Kitchen
+    light.office_panel:
+      name: Office Panel
+      room: Office
+    light.shelf_system_low:
+      name: Shelf System Low
+      room: Living Room
+    light.washer_dryer:
+      name: Washer Dryer
+      room: Utility Room
+    light.workshop_ceiling:
+      name: Workshop Ceiling
+      room: Workshop
+    light.magic_mirror:
+      name: Magic Mirror
+      room: Generic
+    light.hallway:
+      name: Hallway
+      room: Hallway
+    light.xmas:
+      name: Christmas Lights
+      room: Patio
+    sensor.patio_temperature_hue:
+      name: Patio Temperature
+      room: Patio
+    sensor.backyard_temperature_hue:
+      name: Backyard Temperature
+      room: Backyard
+    sensor.living_room_temperature:
+      name: Living Room Temperature
+      room: Living Room
+    sensor.entrance_temperature:
+      name: Entrance Temperature
+      room: Entrance
+    sensor.hallway_temperature:
+      name: Hallway Temperature
+      room: Hallway
+    sensor.kitchen_temperature:
+      name: Kitchen Temperature
+      room: Kitchen
+    sensor.bedroom_temperature:
+      name: Bedroom Temperature
+      room: Bedroom
+    sensor.bathroom_temperature:
+      name: Bathroom Temperature
+      room: Bathroom
+    sensor.utility_temperature:
+      name: Utility Room Temperature
+      room: Utility Room
+    sensor.workshop_temperature:
+      name: Workshop Temperature
+      room: Workshop
+    sensor.humidifier_humidity:
+      name: Humidifier Humidity
+      room: Bedroom
+    sensor.humidifier_temperature:
+      name: Humidifier Temperature
+      room: Bedroom
+

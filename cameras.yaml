@@ -1,0 +1,46 @@
+#Cameras
+  
+- platform: generic
+  name: Camera 1
+  still_image_url: http://192.168.1.60/snap.jpeg
+  stream_source: rtsp://192.168.1.60:554/s2
+  
+- platform: generic
+  name: Camera 2
+  still_image_url: http://192.168.1.55/snap.jpeg
+  stream_source: rtsp://192.168.1.55:554/s2
+
+- platform: generic
+  name: Camera 3
+  still_image_url: http://192.168.1.58/snap.jpeg
+  stream_source: rtsp://192.168.1.58:554/s2
+  
+- platform: generic
+  name: Camera 4
+  still_image_url: http://192.168.1.56/snap.jpeg
+  stream_source: rtsp://192.168.1.56:554/s2
+
+- platform: generic
+  name: Camera 5
+  still_image_url: http://192.168.1.59/snap.jpeg
+  stream_source: rtsp://192.168.1.59:554/s2
+  
+- platform: generic
+  name: Camera 6
+  still_image_url: http://192.168.1.57/snap.jpeg
+  stream_source: rtsp://192.168.1.57:554/s2
+  
+- platform: mjpeg
+  name: "Camera 7"
+  still_image_url: http://192.168.1.2:8090/7/current
+  mjpeg_url: http://192.168.1.2:8087
+  
+- platform: mjpeg
+  name: "Camera 8"
+  still_image_url: http://192.168.1.2:8090/8/current
+  mjpeg_url: http://192.168.1.2:8088
+
+- platform: generic
+  name: Mailcam
+  still_image_url: http://192.168.1.2/mailcam/mail.jpg
+

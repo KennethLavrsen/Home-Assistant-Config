@@ -1,0 +1,183 @@
+# Sensors
+
+# Weather prediction
+- platform: yr
+
+- platform: uptime
+  name: Home Assistant Uptime
+  unit_of_measurement: minutes
+
+- platform: mqtt
+  state_topic: "alarm/nfcid"
+  name: "nfcmqtt"
+  
+- platform: mqtt
+  state_topic: "fan/rising"
+  name: "Bathroom Rising"
+  unit_of_measurement: '%'
+
+- platform: mqtt
+  state_topic: "fan/falling"
+  name: "Bathroom Falling"
+  unit_of_measurement: '%'
+  
+- platform: mqtt
+  state_topic: "fan/humidity"
+  name: "Bathroom Humidity"
+  unit_of_measurement: '%'
+  
+- platform: mqtt
+  name: "Fan Temperature"
+  state_topic: "fan/temperature"
+  unit_of_measurement: '°C'
+
+
+- platform: mqtt
+  state_topic: "utility-fan/rising"
+  name: "Utility Fan Rising"
+  unit_of_measurement: '%'
+
+- platform: mqtt
+  state_topic: "utility-fan/falling"
+  name: "Utility Fan Falling"
+  unit_of_measurement: '%'
+  
+- platform: mqtt
+  state_topic: "utility-fan/humidity"
+  name: "Utility Fan Humidity"
+  unit_of_measurement: '%'
+  
+- platform: mqtt
+  name: "Utility Fan Temperature"
+  state_topic: "utility-fan/temperature"
+  unit_of_measurement: '°C'
+
+
+- platform: mqtt
+  state_topic: "humidifier/humidity"
+  name: "Humidifier Humidity"
+  unit_of_measurement: '%'
+
+- platform: mqtt
+  state_topic: "humidifier/rising"
+  name: "Humidifier Rising"
+  unit_of_measurement: '%'
+
+- platform: mqtt
+  state_topic: "humidifier/falling"
+  name: "Humidifier Falling"
+  unit_of_measurement: '%'
+
+- platform: mqtt
+  name: "Humidifier Temperature"
+  state_topic: "humidifier/temperature"
+  unit_of_measurement: '°C'
+  
+
+- platform: mqtt
+  name: "Office Temperature"
+  state_topic: "office-sensor/temperature"
+  unit_of_measurement: '°C'
+  device_class: temperature
+
+- platform: mqtt
+  name: "Office Pressure"
+  state_topic: "office-sensor/pressure"
+  unit_of_measurement: 'hPa'
+  device_class: pressure
+  
+- platform: mqtt
+  name: "Office Humidity"
+  state_topic: "office-sensor/humidity"
+  unit_of_measurement: '%'
+  device_class: humidity
+  
+  
+- platform: mqtt
+  name: "Precision Thermometer TMP117"
+  state_topic: "precision-thermometer/tmp117"
+  unit_of_measurement: '°C'
+  device_class: temperature
+  
+- platform: mqtt
+  name: "Precision Thermometer TSYS01"
+  state_topic: "precision-thermometer/tsys01"
+  unit_of_measurement: '°C'
+  device_class: temperature
+  
+- platform: mqtt
+  name: "Precision Thermometer Average"
+  state_topic: "precision-thermometer/average"
+  unit_of_measurement: '°C'
+  device_class: temperature
+  
+- platform: mqtt
+  name: "Mailcam Battery"
+  state_topic: "mailcam/battery"
+  unit_of_measurement: 'V'
+  device_class: battery
+
+- platform: rejseplanen
+  name: "Vanløse 9A"
+  stop_id: '008600703'
+  route:
+    - 'Bus 9A'
+  direction: 'Glostrup St.'
+  
+- platform: rejseplanen
+  stop_id: '000003798'
+  name: "Byparken"
+  
+- platform: rejseplanen
+  stop_id: '38'
+  name: "Glostrup Busses"
+  departure_type: 'BUS'
+  
+- platform: rejseplanen
+  name: "Glostrup S Train"
+  stop_id: '008600622'
+  departure_type: 'S'
+
+# These template temperature sensors correct the offset I measured on Hue Motion Sensors
+- platform: template
+  sensors:
+    kitchen_temperature_corrected:
+      friendly_name: Kitchen Temperature Corrected
+      unit_of_measurement: "°C"
+      entity_id: sensor.kitchen_temperature
+      value_template: "{{ (states('sensor.kitchen_temperature')|float + 3) |round(1) }}"
+      
+- platform: template
+  sensors:
+    living_room_temperature_corrected:
+      friendly_name: Living Room Temperature Corrected
+      unit_of_measurement: "°C"
+      entity_id: sensor.living_room_temperature
+      value_template: "{{ (states('sensor.living_room_temperature')|float + 0.4) |round(1) }}"
+
+- platform: template
+  sensors:
+    hallway_temperature_corrected:
+      friendly_name: Hallway Temperature Corrected
+      unit_of_measurement: "°C"
+      entity_id: sensor.hallway_temperature
+      value_template: "{{ (states('sensor.hallway_temperature')|float + 0.9) |round(1) }}"
+
+- platform: template
+  sensors:
+    utility_room_temperature_corrected:
+      friendly_name: Utility Room Temperature Corrected
+      unit_of_measurement: "°C"
+      entity_id: sensor.utility_room_temperature
+      value_template: "{{ (states('sensor.utility_room_temperature')|float + 1) |round(1)}}"
+
+- platform: template
+  sensors:
+    workshop_temperature_corrected:
+      friendly_name: Workshop Temperature Corrected
+      unit_of_measurement: "°C"
+      entity_id: sensor.workshop_temperature
+      value_template: "{{ (states('sensor.workshop_temperature')|float + 1.8) |round(1)}}"
+
+
+

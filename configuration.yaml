@@ -1,0 +1,233 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  #name: Home
+  # Location required to calculate the time the sun rises and sets
+  #latitude: !secret home_latitude
+  #longitude: !secret home_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  #elevation: !secret home_elevation
+  # metric for Metric, imperial for Imperial
+  #unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  #time_zone: Europe/Copenhagen
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend KENNETH disabled
+# introduction:
+
+# Enables the frontend
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Enables configuration UI
+config:
+
+# Mobile App IOS
+mobile_app:
+    
+logger:
+  default: error
+  logs:
+    homeassistant.components.mqtt: error
+    homeassistant.components.http.ban: warning
+#    homeassistant.components.zeroconf: debug
+#    pyipp: debug
+#    alexa_media.helpers: debug
+#    aiounifi: debug
+#    homeassistant.components.unifi: debug
+#    bellows: debug
+#    zigpy: debug
+#    homeassistant.components.zha: debug
+#    homeassistant.components.zwave: info
+
+system_health:
+
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - apple_tv
+    - kodi
+
+ssdp:
+
+zeroconf:
+
+remote:
+  - platform: harmony
+    name: harmony hub
+    host: !secret harmony_ip
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+#Kenneth set this to keep 5 days data
+recorder:
+  purge_keep_days: 5
+  exclude:
+    entities:
+      - sensor.vanlose_9a
+      - sensor.glostrup_busses
+      - sensor.glostrup_s_train
+      - sensor.byparken
+      - sensor.home_assistant_uptime
+    event_types:
+      - service_removed
+      - service_executed
+      - platform_discovered
+      - homeassistant_start
+      - homeassistant_stop      
+      - feedreader
+      - service_registered
+      - call_service
+      - component_loaded
+      - logbook_entry
+      - system_log_event
+      - automation_triggered
+      - script_started
+      - timer_out_of_sync
+      - alexa_media_nnnnn@nnnnn.com
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+  default_zoom: 12
+  hours_to_show: 12
+
+# Track the sun
+sun:
+
+zwave:
+#  usb_path: /dev/ttyACM1
+  usb_path: /dev/serial/by-id/usb-0673_0315-if00
+  network_key: !secret zwave_network_key
+
+ios:
+
+ifttt:
+  key: !secret ifttt_key
+
+
+mqtt:
+  broker: localhost
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  
+alarm_control_panel:
+  - platform: manual
+    name: alarm
+    trigger_time: 300
+    delay_time: 45
+    arming_time: 45
+    code_arm_required: false
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 45
+    armed_away:
+      arming_time: 45
+
+  - platform: manual
+    name: testalarm
+    trigger_time: 30
+    delay_time: 15
+    arming_time: 15
+    code_arm_required: false
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 15
+    armed_away:
+      arming_time: 15
+
+
+# Text to speech
+tts:
+  - platform: google_translate
+    base_url: !secret base_url
+    service_name: google_say
+
+notify:
+  - name: idevices
+    platform: group
+    services:
+      - service: mobile_app_kenneth_s_iphone_7
+      - service: mobile_app_kenneth_s_ipad_pro
+      - service: mobile_app_diane_s_privat
+      - service: mobile_app_kenneths_ipad_11
+
+device_tracker:
+  - platform: mqtt_json
+    devices:
+      testtracker: 'location/testtracker'
+
+person:
+  - name: Diane
+    id: Diane
+    device_trackers:
+      - device_tracker.dianes_privat
+      - device_tracker.dianes_privat_unifi
+  - name: Kenneth
+    id: Kenneth
+    device_trackers:
+      - device_tracker.kenneths_iphone_7
+      - device_tracker.kenneth_iphone_7_unifi
+  - name: Tester
+    id: Tester
+    device_trackers:
+      - device_tracker.testtracker
+
+# Track calendar false is needed to prevent Hass from overwriting the google_calendar.yaml file.        
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+  track_new_calendar: false
+  
+amcrest:
+  - host: !secret amcrest_host
+    username: admin
+    password: !secret amcrest_password
+    stream_source: snapshot
+    binary_sensors:
+      - motion_detected
+      - online
+    sensors:
+      - sdcard
+      - ptz_preset
+    name: Amcrest 1
+    resolution: high
+
+wake_on_lan:
+      
+stream:
+      
+camera: !include cameras.yaml
+cloud: !include clouds.yaml
+fan: !include fans.yaml
+input_boolean: !include input_booleans.yaml
+input_number: !include input_numbers.yaml
+input_select: !include input_selects.yaml
+input_text: !include input_texts.yaml
+rest_command: !include rest_commands.yaml
+sensor: !include sensors.yaml
+binary_sensor: !include binary_sensors.yaml
+switch: !include switches.yaml
+cover: !include covers.yaml
+light: !include lights.yaml
+group: !include groups.yaml
+automation manual: !include_dir_merge_list automations
+automation: !include automations.yaml
+script: !include_dir_merge_named scripts
+scene: !include scenes.yaml
+scene manual: !include_dir_merge_list scenes
+timer: !include timers.yaml
+

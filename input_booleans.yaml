@@ -1,0 +1,21 @@
+#input_booleans
+
+enable_alarm_system:
+  name: Enable Alarm System
+  icon: mdi:shield-home
+
+announce_someone:
+  name: Announce someone
+  icon: mdi:motion-sensor
+  #icon: mdi:bullhorn
+
+fetch_email:
+  name: Fetch Email
+  icon: mdi:email-check
+  
+test_trigger:
+  name: Test Trigger
+  
+bathroom_light_state:
+  name: Bathroom Light State
+  

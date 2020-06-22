@@ -1,0 +1,110 @@
+# Binary Sensors
+# RF sensor codes are not the real ones but examples
+# There are 3 OpenMQTTGateway receivers with software hacked so they report
+# on different MQTT channels. Usually at least 2 of them pick up the code
+
+- platform: mqtt
+  state_topic: "mailserver/state"
+  name: "Mailbox"
+  payload_on: "on"
+  payload_off: "off"
+
+- platform: mqtt
+  name: "Test Magnet RF"
+  state_topic: "OpenMQTTGateway/+/RFtoMQTT"
+  value_template: >-
+    {% if value_json.value == 1234898 %}
+      {{'ON'}}
+    {% elif value_json.value == 1234902 %}
+      {{'OFF'}}
+    {% else %}
+      {{states('binary_sensor.test_magnet_rf') | upper}}
+    {% endif %}
+
+- platform: mqtt
+  name: "Walkin Closet"
+  state_topic: "OpenMQTTGateway/+/RFtoMQTT"
+  value_template: >-
+    {% if value_json.value == 1235402 %}
+      {{'ON'}}
+    {% elif value_json.value == 1235406 %}
+      {{'OFF'}}
+    {% else %}
+      {{states('binary_sensor.walkin_closet') | upper}}
+    {% endif %}
+
+- platform: mqtt
+  name: "Patio Motion RF"
+  state_topic: "OpenMQTTGateway/+/RFtoMQTT"
+  value_template: >-
+    {% if value_json.value == 12363534 %}
+      {{'ON'}}
+    {% else %}
+      {{states('binary_sensor.patio_motion_rf') | upper}}
+    {% endif %}
+  off_delay: 30
+  
+- platform: mqtt
+  name: "Backyard Door Motion RF"
+  state_topic: "OpenMQTTGateway/+/RFtoMQTT"
+  value_template: >-
+    {% if value_json.value == 12377102 %}
+      {{'ON'}}
+    {% else %}
+      {{states('binary_sensor.backyard_door_motion_rf') | upper}}
+    {% endif %}
+  off_delay: 30
+
+- platform: mqtt
+  state_topic: "sensor/frontdoor"
+  name: "Front Door"
+  payload_on: "on"
+  payload_off: "off"
+  
+- platform: mqtt
+  state_topic: "sensor/frontlock"
+  name: "Front Door Lock"
+  payload_on: "on"
+  payload_off: "off"
+  
+- platform: mqtt
+  state_topic: "sensor/utilitydoor"
+  name: "Utility Door"
+  payload_on: "on"
+  payload_off: "off"
+  
+- platform: mqtt
+  state_topic: "sensor/utilitylock"
+  name: "Utility Lock"
+  payload_on: "on"
+  payload_off: "off"
+
+- platform: mqtt
+  state_topic: "office-sensor/motion"
+  name: "Office Sensor Motion"
+  payload_on: "on"
+  payload_off: "off"
+  
+- platform: tod
+  name: Night Time
+  after: '23:00'
+  before: '06:30'
+  
+- platform: tod
+  name: Darkness
+  after: sunset
+  before: sunrise
+            
+- platform: workday
+  country: 'DK'
+  name: 'Workday Sensor'
+  
+- platform: template
+  sensors:
+    test_trigger:
+      friendly_name: 'Test Trigger'
+      device_class: 'door'
+      value_template: >-
+        {{ is_state('input_boolean.test_trigger', 'on') }}
+           
+

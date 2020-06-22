@@ -1,0 +1,45 @@
+#Timers
+office_light:
+  duration: '00:05:00'
+  
+living_room_night_light:
+  duration: '00:05:00'
+  
+terrace_light:
+  duration: '00:05:00'
+  
+rf_bridge_debounce:
+  duration: '00:00:05'
+  
+patio_motion:
+  duration: '00:03:00'
+  
+bicycle_motion:
+  duration: '00:03:00'
+  
+backyard_door_motion:
+  duration: '00:03:00'
+  
+backyard_shed_motion:
+  duration: '00:03:00'
+  
+backyard_shed_debounce:
+  duration: '00:00:15'
+  
+camera_timeout:
+  duration: '00:01:00'
+  
+bathroom_light:
+  duration: '00:05:00'
+
+workshop_light:
+  duration: '00:10:00'
+  
+utility_room_light:
+  duration: '00:02:00'
+  
+camera_rotation_reset:
+  duration: '00:02:00'
+  
+indoor_motion_sense:
+  duration: '00:03:00'

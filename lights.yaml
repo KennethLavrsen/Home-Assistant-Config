@@ -1,0 +1,131 @@
+# lights
+  
+- platform: mqtt
+  name: Magic Mirror
+  command_topic: "magicmirror/set"
+  state_topic: "magicmirror/state"
+  payload_on: "on"
+  payload_off: "off"
+  
+- platform: mqtt
+  name: Hallway
+  command_topic: "hallway/set"
+  state_topic: "hallway/state"
+  payload_on: "on"
+  payload_off: "off"
+
+# Switches that control a light are being created as lights
+# This is mainly to have Google Home and Alexa to treat them as lights 
+- platform: switch
+  name: Hood
+  entity_id: switch.hood
+  
+- platform: switch
+  name: Shelf System Low
+  entity_id: switch.shelf_system_low
+
+- platform: switch
+  name: Washer Dryer
+  entity_id: switch.washer_dryer
+
+- platform: switch
+  name: Bench Center
+  entity_id: switch.bench_center
+
+- platform: switch
+  name: Workshop Ceiling
+  entity_id: switch.workshop_ceiling
+
+- platform: switch
+  name: Entrance Ceiling
+  entity_id: switch.entrance_ceiling
+  
+- platform: template
+  lights:
+    alexa_virtual:
+      friendly_name: "Alexa Dummy Light"
+      turn_on:
+      turn_off:
+      set_level:
+
+# Groups
+    
+- platform: group
+  name: Entire House
+  entities:
+    - light.best
+    - light.shelf_system_left
+    - light.shelf_system_right
+    - light.ph
+    - light.sofa
+    - light.strip
+    - light.floor_lamp
+    - light.hood
+    - light.shelf_system_low
+    - light.kitchen_table
+    - light.microwave
+    - light.sink_left
+    - light.sink_right
+    - light.vitrine
+    - light.bed_diane
+    - light.bed_kenneth
+    - light.ceiling_1
+    - light.ceiling_2
+    - light.ceiling_3
+    - light.mirror_left
+    - light.mirror_right
+    - light.toilet
+    - light.shower
+    - light.computer
+    - light.makeup
+    - light.office_panel
+    - light.utility_ceiling
+    - light.washer_dryer
+    - light.bench_left
+    - light.bench_right
+    - light.bench_center
+    - light.workshop_ceiling
+    - light.closet
+    - light.hallway
+    - light.terrace
+    - light.entrance_ceiling
+    - light.xmas
+    
+- platform: group
+  name: Almost
+  entities:
+    - light.best
+    - light.shelf_system_left
+    - light.shelf_system_right
+    - light.ph
+    - light.sofa
+    - light.strip
+    - light.floor_lamp
+    - light.hood
+    - light.shelf_system_low
+    - light.kitchen_table
+    - light.microwave
+    - light.sink_left
+    - light.sink_right
+    - light.vitrine
+    - light.bed_diane
+    - light.bed_kenneth
+    - light.ceiling_1
+    - light.ceiling_2
+    - light.ceiling_3
+    - light.computer
+    - light.makeup
+    - light.office_panel
+    - light.utility_ceiling
+    - light.washer_dryer
+    - light.bench_left
+    - light.bench_right
+    - light.bench_center
+    - light.workshop_ceiling
+    - light.closet
+    - light.hallway
+    - light.terrace
+    - light.entrance_ceiling
+    - light.xmas
+
+

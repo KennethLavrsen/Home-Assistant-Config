@@ -1,0 +1,118 @@
+# Covers
+- platform: mqtt
+  name: "Left Blinds"
+  command_topic: "blinds/set/left"
+  state_topic: "blinds/position/left"
+  position_topic: "blinds/position/left"
+  set_position_topic: "blinds/set/left"
+  retain: false
+  payload_open: "50"
+  payload_close: "0"
+  payload_stop: "85"
+  state_open: "50"
+  state_closed: "0"
+  optimistic: false
+  device_class: blind
+ 
+- platform: mqtt
+  name: "Right Blinds"
+  command_topic: "blinds/set/right"
+  state_topic: "blinds/position/right"
+  position_topic: "blinds/position/right"
+  set_position_topic: "blinds/set/right"
+  retain: false
+  payload_open: "50"
+  payload_close: "0"
+  payload_stop: "85"
+  state_open: "50"
+  state_closed: "0"
+  optimistic: false
+  device_class: blind
+
+- platform: group
+  name: "Both Blinds"
+  entities:
+      - cover.left_blinds
+      - cover.right_blinds
+
+- platform: mqtt
+  name: "Office Blinds"
+  command_topic: "office-blinds/set"
+  state_topic: "office-blinds/position"
+  position_topic: "office-blinds/position"
+  set_position_topic: "office-blinds/set"
+  retain: false
+  payload_open: "50"
+  payload_close: "0"
+  payload_stop: "85"
+  state_open: "50"
+  state_closed: "0"
+  optimistic: false
+  device_class: blind
+
+- platform: mqtt
+  name: "Workshop Blinds"
+  command_topic: "workshop-blinds/set"
+  state_topic: "workshop-blinds/position"
+  position_topic: "workshop-blinds/position"
+  set_position_topic: "workshop-blinds/set"
+  retain: false
+  payload_open: "50"
+  payload_close: "0"
+  payload_stop: "85"
+  state_open: "50"
+  state_closed: "0"
+  optimistic: false
+  device_class: blind
+
+- platform: mqtt
+  name: "Bedroom Curtain"
+  command_topic: "bedroomcurtain/set"
+  state_topic: "bedroomcurtain/state"
+  retain: false
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  state_open: "open"
+  state_closed: "closed"
+  optimistic: false
+  device_class: shade
+
+- platform: mqtt
+  name: "Living Room Curtain"
+  command_topic: "living-room-curtain/set"
+  state_topic: "living-room-curtain/state"
+  retain: false
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  state_open: "open"
+  state_closed: "closed"
+  optimistic: false
+  device_class: shade
+  
+- platform: mqtt
+  name: "Kitchen Curtain"
+  command_topic: "kitchencurtain/set"
+  state_topic: "kitchencurtain/state"
+  retain: false
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  state_open: "open"
+  state_closed: "closed"
+  optimistic: false
+  device_class: curtain
+  
+- platform: mqtt
+  name: "Small Window"
+  command_topic: "smallwindow/set"
+  state_topic: "smallwindow/state"
+  retain: false
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  state_open: "open"
+  state_closed: "closed"
+  optimistic: false
+  device_class: window

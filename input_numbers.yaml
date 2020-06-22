@@ -1,0 +1,46 @@
+#input_numbers
+
+
+bathroom_fan_rising:
+  name: Bathroom Fan Rising
+  min: 30
+  max: 100
+  step: 1
+  
+bathroom_fan_falling:
+  name: Bathroom Fan Falling
+  min: 30
+  max: 100
+  step: 1
+
+utility_fan_rising:
+  name: Utility Fan Rising
+  min: 30
+  max: 100
+  step: 1
+  
+utility_fan_falling:
+  name: Utility Fan Falling
+  min: 30
+  max: 100
+  step: 1
+
+humidifier_rising:
+  name: Humidifier Rising
+  min: 10
+  max: 100
+  step: 1
+  
+humidifier_falling:
+  name: Humidifier Falling
+  min: 1
+  max: 90
+  step: 1
+  
+
+bedroom_ventilator_speed:
+  name: Bedroom Ventilator Speed
+  min: 0
+  max: 100
+  step: 1
+  

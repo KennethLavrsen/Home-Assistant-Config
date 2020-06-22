@@ -1,0 +1,36 @@
+- platform: mqtt
+  name: "Short Toilet Flush"
+  state_topic: "toiletflushshort/state"
+  command_topic: "toiletflushshort/set"
+  payload_on: "ON"
+  payload_off: "OFF"
+  state_on: "ON"
+  state_off: "OFF"
+  optimistic: false
+  qos: 0
+  retain: false
+
+- platform: mqtt
+  name: "Long Toilet Flush"
+  state_topic: "toiletflushlong/state"
+  command_topic: "toiletflushlong/set"
+  payload_on: "ON"
+  payload_off: "OFF"
+  state_on: "ON"
+  state_off: "OFF"
+  optimistic: false
+  qos: 0
+  retain: false
+  
+- platform: mqtt
+  name: "Webserver Switch"
+  state_topic: "stat/blitzwolf/POWER"  
+  command_topic: "cmnd/blitzwolf/POWER"
+  payload_on: "ON"
+  payload_off: "OFF"
+  availability_topic: "tele/blitzwolf/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  retain: false
+

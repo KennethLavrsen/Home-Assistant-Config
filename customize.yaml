@@ -1,0 +1,68 @@
+# I do not like the icons for motion sensors
+# You cannot easily see the difference between on and off
+binary_sensor.bathroom_motion:
+  device_class: none
+  
+binary_sensor.utility_room_motion:
+  device_class: none
+  
+binary_sensor.workshop_motion:
+  device_class: none
+  
+binary_sensor.kitchen_window:
+  device_class: none
+  
+binary_sensor.bedroom_window:
+  device_class: none
+  
+binary_sensor.workshop_window:
+  device_class: none
+  
+binary_sensor.office_window:
+  device_class: none
+  
+binary_sensor.patio_door:
+  device_class: none
+
+binary_sensor.kitchen_motion:
+  device_class: none
+  
+binary_sensor.bedroom_motion:
+  device_class: none
+  
+binary_sensor.living_room_motion:
+  device_class: none
+  
+binary_sensor.patio_motion_hue:
+  device_class: none
+  
+binary_sensor.backyard_motion_hue:
+  device_class: none
+  
+binary_sensor.backyard_shed_motion_hue:
+  device_class: none
+  
+binary_sensor.screen_door:
+  device_class: none
+
+binary_sensor.office_motion:
+  device_class: none
+  
+binary_sensor.makeup_motion:
+  device_class: none
+  
+binary_sensor.entrance_motion:
+  device_class: none
+  
+binary_sensor.hallway_motion:
+  device_class: none
+  
+binary_sensor.washer_vibration:
+  device_class: none
+  
+cover.both_blinds:
+  device_class: shade
+
+binary_sensor.office_sensor_motion:
+  device_class: none
+

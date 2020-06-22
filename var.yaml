@@ -1,0 +1,4 @@
+menu:
+    friendly_name: 'Empty Menu'
+    initial_value: 0
+    icon: mdi:bug

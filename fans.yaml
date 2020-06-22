@@ -1,0 +1,37 @@
+- platform: mqtt
+  name: "fan"
+  state_topic: "fan/state"
+  command_topic: "fan/set"
+  payload_on: "on"
+  payload_off: "off"
+
+- platform: mqtt
+  name: "Utility Fan"
+  state_topic: "utility-fan/state"
+  command_topic: "utility-fan/set"
+  payload_on: "on"
+  payload_off: "off"
+
+- platform: mqtt
+  name: "humidifier"
+  state_topic: "humidifier/state"
+  command_topic: "humidifier/set"
+  payload_on: "on"
+  payload_off: "off"
+
+- platform: mqtt
+  name: "Bedroom Ventilator"
+  state_topic: "bedroom-ventilator/state"
+  command_topic: "bedroom-ventilator/set"
+  speed_command_topic: "bedroom-ventilator/speed/set"
+  speed_state_topic: "bedroom-ventilator/speed/state"
+  payload_on: "on"
+  payload_off: "off"
+  payload_high_speed: "100"
+  payload_medium_speed: "50"
+  payload_low_speed: "20"
+  speeds:
+    - "off"
+    - low
+    - medium
+    - high

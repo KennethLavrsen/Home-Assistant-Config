@@ -1,0 +1,16 @@
+#Zones   Not exactly real for Home
+- name: Home
+  latitude: 55.680000
+  longitude: 12.410000
+  radius: 100
+
+- name: Diane work
+  latitude: 55.727792
+  longitude: 12.379125
+  radius: 800
+    
+- name: Kenneth work
+  latitude: 55.663224
+  longitude: 12.396039
+  radius: 200
+

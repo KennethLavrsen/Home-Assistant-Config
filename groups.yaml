@@ -1,0 +1,13 @@
+doors_windows:
+  name: Doors & Windows
+  entities:
+    - binary_sensor.kitchen_window
+    - binary_sensor.bedroom_window
+    - binary_sensor.workshop_window
+    - binary_sensor.office_window
+    - binary_sensor.front_door
+    - binary_sensor.front_door_lock
+    - binary_sensor.utility_door
+    - binary_sensor.utility_lock
+    - binary_sensor.patio_door
+    
