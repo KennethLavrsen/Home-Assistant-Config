@@ -1,0 +1,123 @@
+- alias: 'Neopixel Box'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bedroom_window
+        - binary_sensor.kitchen_window
+        - binary_sensor.office_window
+        - binary_sensor.workshop_window
+        - binary_sensor.front_door
+        - binary_sensor.front_door_lock
+        - binary_sensor.utility_door
+        - binary_sensor.utility_lock
+        - binary_sensor.patio_door
+        - input_boolean.announce_someone
+    - platform: mqtt
+      topic: neopixelbox/announce
+      payload: 'Connected'
+    - platform: mqtt
+      topic: nfcneobox/announce
+      payload: 'Connected'
+    - platform: mqtt
+      topic: nfcneoutil/announce
+      payload: 'Connected'
+  action:
+    - delay:
+        seconds: 1
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/0"
+        payload_template: >
+          {% if is_state('input_boolean.announce_someone', 'on') %} 000008 {% else %} 000000 {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/1"
+        payload_template: >
+          {% if is_state('binary_sensor.kitchen_window', 'on') %}
+             020000
+          {% else %}
+             000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/2"
+        payload_template: >
+          {% if is_state('binary_sensor.bedroom_window', 'on') %}
+            020000
+          {% else %}
+            000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/3"
+        payload_template: >
+          {% if is_state('binary_sensor.workshop_window', 'on') %}
+            020000
+          {% else %}
+            000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/4"
+        payload_template: >
+          {% if is_state('binary_sensor.office_window', 'on') %}
+            020000
+          {% else %}
+            000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/5"
+        payload_template: >
+          {% if is_state('binary_sensor.front_door', 'on') or
+                is_state('binary_sensor.front_door_lock', 'on')
+           %}
+             020000
+          {% else %}
+             000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/6"
+        payload_template: >
+          {% if is_state('binary_sensor.utility_door', 'on') or
+                is_state('binary_sensor.utility_lock', 'on')
+           %}
+            020000
+          {% else %}
+            000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "neopixelbox/led/7"
+        payload_template: >
+          {% if is_state('binary_sensor.patio_door', 'on') %}
+            020000
+          {% else %}
+            000200
+          {% endif %}
+        retain: false
+        qos: 0
+    - service: mqtt.publish
+      data:
+        topic: "house/secured"
+        payload_template: >
+          {% if is_state('group.doors_windows', 'on') %} off {% else %} on {% endif %}
+        retain: false
+        qos: 0
+

@@ -1,0 +1,200 @@
+- alias: Notify Tester Enters Zone
+  trigger:
+    - platform: zone
+      entity_id: person.tester
+      zone: zone.central_station
+      event: enter
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: notify.alexa_media_echo_office
+      data_template:
+        data:
+          type: announce
+        message: >
+          {{ trigger.to_state.name }} arriving at {{ trigger.to_state.state }}
+      # message: >
+      #   {{ trigger.entity_id.attributes.friendly_name }} is arriving at {{ trigger.zone }}
+
+      
+- alias: Notify Tester Leaves Zone
+  trigger:
+    - platform: zone
+      entity_id: person.tester
+      zone: zone.central_station
+      event: leave
+  action:
+    - service: notify.alexa_media_echo_office
+      data_template:
+        data:
+          type: announce
+        message: >
+          {{ trigger.to_state.name }} leaving {{ trigger.from_state.state }}
+      # message: >
+      #   {{ trigger.entity_id.attributes.friendly_name }} is leaving {{ trigger.zone }}
+
+
+- alias: Notify When Someone Enters Zone
+  trigger:
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.central_station
+      event: enter
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.rodovre_centrum
+      event: enter
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.airport
+      event: enter
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.manshopping
+      event: enter
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.vanlose_station
+      event: enter
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: script.alexa_tts_message
+      data_template:
+        message: >
+          {{ trigger.to_state.name }} is arriving at {{ trigger.to_state.state }}
+
+- alias: Notify When Someone Leaves Zone
+  trigger:
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.central_station
+      event: leave
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.rodovre_centrum
+      event: leave
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.airport
+      event: leave
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.manshopping
+      event: leave
+    - platform: zone
+      entity_id: person.kenneth, person.diane
+      zone: zone.vanlose_station
+      event: leave
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: script.alexa_tts_message
+      data_template:
+        message: >
+          {{ trigger.to_state.name }} is leaving {{ trigger.from_state.state }}
+
+- alias: 'Kenneth arriving home'
+  initial_state: true
+  trigger:
+    - platform: zone
+      entity_id: person.kenneth
+      zone: zone.home
+      event: enter
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.alarm
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        title: "Kenneth registered to be home"
+        message: "Kenneth is arriving home"
+        data:
+          push:
+            badge: 1
+    - service: notify.mobile_app_diane_s_privat
+      data:
+        title: "Kenneth arrived home"
+        message: "Kenneth arrived home"
+        data:
+          push:
+            badge: 1
+    - service: script.alexa_tts_message
+      data:
+        message: 'Kenneth is arriving'
+        
+- alias: 'Diane arriving home'
+  initial_state: true
+  trigger:
+    - platform: zone
+      entity_id: person.diane
+      zone: zone.home
+      event: enter
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.alarm
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        title: "Diane arrived home"
+        message: "Diane arrived home"
+        data:
+          push:
+            badge: 1
+    - service: script.alexa_tts_message
+      data:
+        message: 'Diane is arriving'
+
+      
+- alias: 'Kenneth leaving work'
+  initial_state: true
+  trigger:
+    - platform: zone
+      entity_id: person.kenneth
+      zone: zone.kenneth_work
+      event: leave
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: script.alexa_tts_message
+      data:
+        message: 'Kenneth is leaving work'
+
+- alias: 'Diane leaving work'
+  initial_state: true
+  trigger:
+    - platform: zone
+      entity_id: person.diane
+      zone: zone.diane_work
+      event: leave
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+  action:
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        title: "Diane is leaving work"
+        message: "Diane is leaving work"
+        data:
+          push:
+            badge: 1
+    - service: script.alexa_tts_message
+      data:
+        message: 'Diane is leaving work. Remember to empty the dishwasher'
+
+

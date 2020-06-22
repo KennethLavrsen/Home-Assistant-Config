@@ -1,0 +1,30 @@
+- alias: 'Mail in the Mailbox'
+  initial_state: true
+  trigger:
+    platform: mqtt
+    topic: mailserver/stateless
+    payload: 'on'
+  action:
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        title: "Mail in the mailbox"
+        message: "Mail arrived {{ now().strftime(\"%d-%m-%y %H:%M:%H\") }}"
+        data:
+          attachment:
+            content-type: jpeg
+          push:
+            category: camera
+            badge: '4'
+          entity_id: 'camera.mailcam'
+    - service: mqtt.publish
+      data_template:
+        topic: "camera1/set"
+        retain: false
+        payload: 105
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_rotation_reset
+    - service: timer.start
+      data:
+        entity_id: timer.camera_rotation_reset
+        duration: '00:02:00'

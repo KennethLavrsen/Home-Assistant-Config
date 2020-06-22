@@ -1,0 +1,21 @@
+- alias: 'Smoke Alarm Notification'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.smoke_smszb_120
+      to: "on"
+  action:
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        title: "Smoke Detected"
+        message: "Smoke in the utility room"
+        data:
+          push:
+            badge: 9
+    - service: notify.mobile_app_diane_s_privat
+      data:
+        title: "Smoke Detected"
+        message: "Smoke in the utility room"
+        data:
+          push:
+            badge: 9

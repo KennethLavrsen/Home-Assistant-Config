@@ -1,0 +1,21 @@
+alexa_little_beer:
+  sequence:
+    - service: notify.alexa_media_everywhere
+      data:
+        data:
+          type: announce
+        message: "Would you like a little beer?"
+        #message: <lang xml:lang="da-DK">Vil du ha en lille øl?</lang>
+
+        
+alexa_tts_message:
+  sequence:
+    - service: notify.alexa_media_everywhere
+      data_template:
+        data:
+          type: announce
+        message: '{{ message }}'
+        #message: "<amazon:effect name='whispered'>This is a test of the announcing system.</amazon:effect>"
+        #If you understand the below then you are from Quebec
+        #<voice name="Mathieu"><lang xml:lang="fr-FR">Ostie de tarbanak de Kris de maudite mard</lang></voice>
+        #<voice name="Mathieu"><lang xml:lang="fr-FR">Crisse de câlice de tabarnak d'esti de sacrament de trou viarge</lang></voice>

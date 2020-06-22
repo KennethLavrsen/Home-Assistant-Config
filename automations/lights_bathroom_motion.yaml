@@ -1,0 +1,112 @@
+# Bathroom lights
+
+- alias: 'Bathroom timer reset on motion'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bathroom_motion
+      to: 'on'
+  action:
+    - service: timer.cancel
+      entity_id: timer.bathroom_light
+
+- alias: 'Bathroom light on night' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bathroom_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.bathroom_light_state
+      state: 'off'
+    - condition: time
+      after: '00:30:00'
+      before: '05:30:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.bathroom_light_state
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.shower
+          - light.toilet
+        brightness_pct: 30
+
+        
+- alias: 'Bathroom light on normal' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bathroom_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.bathroom_light_state
+      state: 'off'
+    - condition: time
+      after: '07:00:00'
+      before: '00:30:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.bathroom_light_state
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.bathroom
+        brightness_pct: 100
+
+        
+- alias: 'Bathroom light on early' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bathroom_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.bathroom_light_state
+      state: 'off'
+    - condition: time
+      after: '05:30:00'
+      before: '07:00:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.bathroom_light_state
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.bathroom
+        brightness_pct: 50
+      
+- alias: 'Bathroom motion start timer' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bathroom_motion
+      to: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.bathroom_light
+        duration: '00:05:00'
+    
+- alias: 'Bathroom light off' 
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.bathroom_light
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.bathroom_light_state
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.bathroom
+        transition: 30

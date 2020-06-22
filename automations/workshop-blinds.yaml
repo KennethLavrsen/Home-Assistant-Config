@@ -1,0 +1,58 @@
+
+        
+- alias: 'Workshop Blinds 0'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_blinds_switch
+      event: 2003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'workshop-blinds/set'
+        payload: "0"
+        
+- alias: 'Workshop Blinds 50'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_blinds_switch
+      event: 1003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'workshop-blinds/set'
+        payload: "50"
+        
+- alias: 'Workshop Blinds Step Up'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_blinds_switch
+      event: 1002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'workshop-blinds/step'
+        payload: "10"
+        
+- alias: 'Workshop Blinds Step Down'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_blinds_switch
+      event: 2002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'workshop-blinds/step'
+        payload: "-10"   
+        

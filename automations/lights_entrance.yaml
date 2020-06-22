@@ -1,0 +1,35 @@
+# Lights Entrance at night
+
+- alias: 'Entrance lights on' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.entrance_motion
+      to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.entrance_luminance
+      below: 10
+  action:
+    - service: light.turn_on
+      entity_id: light.entrance_ceiling
+
+# We do not want light to turn off when we leave it on and turn on alarm
+# No that was a shitty condition. Then the light never turns off when we leave 
+- alias: 'Entrance lights off' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.entrance_motion
+      to: 'off'
+      for:
+        seconds: 60
+#  condition:
+#    - condition: state
+#      entity_id: alarm_control_panel.alarm
+#      state: 'disarmed'
+  action:
+    - service: light.turn_off
+      entity_id: light.entrance_ceiling
+ 
+

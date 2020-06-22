@@ -1,0 +1,161 @@
+
+        
+- alias: 'Both Blinds 0'
+  initial_state: 'on'
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: philips_remote_blinds
+        event: 4002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/set/left'
+        payload: "0"
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/set/right'
+        payload: "0"
+        
+- alias: 'Both Blinds 50'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: philips_remote_blinds
+      event: 1002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/set/left'
+        payload: "50"
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/set/right'
+        payload: "50"
+        
+- alias: 'Both Blinds Not Home'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: philips_remote_blinds
+      event: 1003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/set/left'
+        payload: "90"
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/set/right'
+        payload: "90"
+        
+- alias: 'Both Blinds Step Up'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: philips_remote_blinds
+      event: 2002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/step/left'
+        payload: "10"
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/step/right'
+        payload: "10"
+        
+- alias: 'Both Blinds Step Down'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: philips_remote_blinds
+      event: 3002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/step/left'
+        payload: "-10"
+    - service: mqtt.publish
+      data:
+        topic: 'blinds/step/right'
+        payload: "-10"       
+        
+#- alias: 'Both Blinds 0 zigbee2mqtt'
+#  initial_state: true
+#  trigger:
+#    platform: mqtt
+#    topic: zigbee2mqtt/hue_remote_blinds
+#  condition:
+#    condition: template
+#    value_template: '{{ "off" == trigger.payload_json.action }}'
+#  action:
+#    - service: mqtt.publish
+#      data:
+#        topic: 'blinds/set/both'
+#        payload: "0"
+#
+#- alias: 'Both Blinds 50 zigbee2mqtt'
+#  initial_state: true
+#  trigger:
+#    platform: mqtt
+#    topic: zigbee2mqtt/hue_remote_blinds
+#  condition:
+#    condition: template
+#    value_template: '{{ "on" == trigger.payload_json.action }}'
+#  action:
+#    - service: mqtt.publish
+#      data:
+#        topic: 'blinds/set/both'
+#        payload: "50"
+#        
+#- alias: 'Both Blinds 85 zigbee2mqtt'
+#  initial_state: true
+#  trigger:
+#    platform: mqtt
+#    topic: zigbee2mqtt/hue_remote_blinds
+#  condition:
+#    condition: template
+#    value_template: '{{ "up-hold" == trigger.payload_json.action }}'
+#  action:
+#    - service: mqtt.publish
+#      data:
+#        topic: 'blinds/set/both'
+#        payload: "85"
+#
+#- alias: 'Blinds step up zigbee2mqtt'
+#  initial_state: true
+#  trigger:
+#    platform: mqtt
+#    topic: zigbee2mqtt/hue_remote_blinds
+#  condition:
+#    condition: template
+#    value_template: '{{ "up-press" == trigger.payload_json.action }}'
+#  action:
+#    - service: mqtt.publish
+#      data:
+#        topic: 'blinds/step'
+#        payload: "1"
+# 
+#- alias: 'Blinds step down zigbee2mqtt'
+#  initial_state: true
+#  trigger:
+#    platform: mqtt
+#    topic: zigbee2mqtt/hue_remote_blinds
+#  condition:
+#    condition: template
+#    value_template: '{{ "down-press" == trigger.payload_json.action }}'
+#  action:
+#    - service: mqtt.publish
+#      data:
+#        topic: 'blinds/step'
+#        payload: "-1"

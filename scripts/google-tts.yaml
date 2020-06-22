@@ -1,0 +1,36 @@
+#Google TTS
+text2speech:
+  sequence:
+    - service: media_player.turn_on
+      data:
+        entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.bathroom_speaker, media_player.workshop_speaker
+    - delay:
+        milliseconds: 1000
+    - service: tts.google_say
+      entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.bathroom_speaker, media_player.workshop_speaker
+      data_template:
+        message: '{{ message }}'
+
+play_mp3_google:
+  sequence:
+#    - service: media_player.turn_on
+#      data:
+#        entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.bathroom_speaker, media_player.workshop_speaker
+#    - delay:
+#        milliseconds: 1000
+    - service: media_player.play_media
+      data_template:
+        entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.office_speaker, media_player.bathroom_speaker, media_player.workshop_speaker, media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
+        media_content_id: http://192.168.1.15:8123/local/{{ file }}
+        media_content_type: audio/mp3
+
+
+skide_smart:
+  sequence:
+    - service: tts.google_say
+      entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.office_speaker, media_player.bathroom_speaker, media_player.workshop_speaker, media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
+      data_template:
+        language: 'da'
+        message: 'Skide smart'
+
+

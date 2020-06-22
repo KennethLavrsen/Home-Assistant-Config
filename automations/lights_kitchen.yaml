@@ -1,0 +1,104 @@
+# Lights Kitchen at night
+
+- alias: 'Kitchen night light on' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_motion
+      to: 'on'
+  condition:
+#    - condition: state
+#      entity_id: binary_sensor.night_time
+#      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.darkness
+      state: 'on'
+    - condition: state
+      entity_id: light.sink_right
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.sink_left
+        brightness: 30
+    
+- alias: 'Kitchen night light off' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_motion
+      to: 'off'
+      for:
+        seconds: 60
+  condition:
+    - condition: state
+      entity_id: light.sink_right
+      state: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.sink_left
+      
+- alias: 'Motion turns kitchen to normal in evening' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.darkness
+      state: 'on'
+    - condition: state
+      entity_id: light.sink_left
+      state: 'on'
+    - condition: state
+      entity_id: light.sink_right
+      state: 'on'
+    - condition: state
+      entity_id: light.kitchen_table
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.kitchen_table
+          - light.microwave
+          - light.sink_left
+          - light.sink_right
+        brightness_pct: 80
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hood
+          
+- alias: 'Motion turns kitchen to normal on dark day' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.kitchen_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.darkness
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.kitchen_luminance
+      below: 10
+    - condition: state
+      entity_id: light.sink_left
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.kitchen_table
+          - light.microwave
+          - light.sink_left
+          - light.sink_right
+        brightness_pct: 80
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hood
+ 
+

@@ -1,0 +1,38 @@
+alarm_triggered:
+  sequence:
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.alarm
+    - service: mqtt.publish
+      data:
+        topic: "alarm/alarmmode"
+        payload: "triggered"
+        retain: true
+    - service: script.play_mp3_google
+      data:
+        file: 'alarm45.mp3'
+    - delay:
+        seconds: 15
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: pending
+    - service: script.play_mp3_google
+      data:
+        file: '30seconds.mp3'
+    - delay:
+        seconds: 10
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: pending
+    - service: script.play_mp3_google
+      data:
+        file: '20seconds.mp3'
+    - delay:
+        seconds: 10
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: pending
+    - service: script.play_mp3_google
+      data:
+        file: '10seconds.mp3'
+
+

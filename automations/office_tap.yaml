@@ -1,0 +1,68 @@
+- alias: 'Turn On Office from tap normal'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_office
+      event: 16
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.computer
+          - light.makeup
+        brightness_pct: 100
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.office_panel
+
+- alias: 'Turn On Office from tap bright 1'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_office
+      event: 17
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.computer
+          - light.makeup
+        brightness_pct: 100
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.office_panel
+        brightness_pct: 30
+        
+- alias: 'Turn On Office from tap bright 2'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_office
+      event: 18
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.office
+        brightness_pct: 60
+          
+- alias: 'Turn Off Office from tap'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_office
+      event: 34
+  action:
+    - service: light.turn_off
+      entity_id:
+          - light.office

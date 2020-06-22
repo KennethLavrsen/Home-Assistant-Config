@@ -1,0 +1,26 @@
+- alias: Front door left unlocked for 5 mins
+  trigger:
+    platform: state
+    entity_id: lock.front_door
+    to: 'on'
+    for:
+      minutes: 5 
+
+  action:
+    - service: script.activate_alexa_actionable_notification
+      data_template:
+        text: 'The front door has been unlocked for 5 mins, would you like me to lock it?'
+        event_id: 'actionable_notification_lock_left_unlocked'
+        alexa_device: 'media_player.living_room_echo'
+        
+- alias: Lock the door via actionable notificaiton
+  trigger:
+    platform: event
+    event_type: alexa_actionable_notification
+    event_data:
+      event_id: actionable_notification_lock_left_unlocked
+      event_response: ResponseYes
+        
+  action:
+    - service: lock.lock
+      entity_id: lock.front_door

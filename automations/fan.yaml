@@ -1,0 +1,52 @@
+# Automations for bathroom fan
+
+# This automation script runs when a value is received via MQTT topic fan/rising 
+# It sets the value slider on the GUI.
+- alias: Set Bathroom Fan Rising
+  trigger:
+    platform: mqtt
+    topic: 'fan/rising'
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.bathroom_fan_rising
+      value: "{{ trigger.payload }}"
+
+# This second automation script runs when the rising fan slider is moved.
+# It publishes its value to the MQTT topic that sets the fan rising value
+- alias: Fan Rising slider moved
+  trigger:
+    platform: state
+    entity_id: input_number.bathroom_fan_rising
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: 'fan/set/rising'
+      retain: false
+      payload: "{{ states('input_number.bathroom_fan_rising') | int }}"
+
+
+# This automation script runs when a value is received via MQTT topic fan/falling
+# It sets the value slider on the GUI.
+- alias: Set Bathroom Fan Falling
+  trigger:
+    platform: mqtt
+    topic: 'fan/falling'
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.bathroom_fan_falling
+      value: "{{ trigger.payload }}"
+
+# This second automation script runs when the falling fan slider is moved.
+# It publishes its value to the MQTT topic that sets the fan falling value
+- alias: Fan Falling slider moved
+  trigger:
+    platform: state
+    entity_id: input_number.bathroom_fan_falling
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: 'fan/set/falling'
+      retain: false
+      payload: "{{ states('input_number.bathroom_fan_falling') | int }}"

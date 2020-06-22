@@ -1,0 +1,27 @@
+# Walkin Closet Light
+
+- alias: 'Walkin Closet light on' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.walkin_closet
+      from: 'off'
+      to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.closet
+
+    
+- alias: 'Walkin Closet light off' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.walkin_closet
+      from: 'on'
+      to: 'off'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id: light.closet
+

@@ -1,0 +1,43 @@
+# Boot and restart
+
+- alias: Timeouts and stop stream
+  initial_state: 'on'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.bathroom_light
+        duration: '00:05:00'
+    - service: timer.start
+      data:
+        entity_id: timer.office_light
+        duration: '00:05:00'
+    - service: timer.start
+      data:
+        entity_id: timer.workshop_light
+        duration: '00:10:00'
+    - service: timer.start
+      data:
+        entity_id: timer.utility_room_light
+        duration: '00:02:00'
+    - service: media_player.turn_off
+      data:
+        entity_id: media_player.living_room_display
+    - service: media_player.turn_off
+      data:
+        entity_id: media_player.bedroom_display
+    - service: media_player.turn_off
+      data:
+        entity_id: media_player.kitchen_display
+    - service: mqtt.publish
+      data:
+        topic: 'fan/set/report'
+        retain: false
+        payload: "ON"
+    - service: mqtt.publish
+      data:
+        topic: 'humidifier/set/report'
+        retain: false
+        payload: "ON"

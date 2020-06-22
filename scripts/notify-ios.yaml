@@ -1,0 +1,56 @@
+#Script
+
+
+
+notify_ios_text:
+  sequence:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: device_tracker.kenneths_iphone_7
+        state: 'not_home'
+      - condition: state
+        entity_id: device_tracker.dianes_privat
+        state: 'not_home'
+    - service: notify.idevices
+      data_template:
+        title: '{{ title }}'
+        message: "{{ message }} {{ now().strftime(\"%d-%m-%y %H:%M:%H\") }}"
+        data:
+          push:
+            badge: '{{ badge }}'          
+
+
+#usage
+#  action:
+#    - service: script.notify_ios_stream_noone_home
+#      data:
+#        title: 'Ding Dong Doorbell'
+#        message: 'Ding Dong Doorbell'
+#        badge: 5
+#        camera: 'camera.camera_1'
+
+#Notify when both are not home
+notify_ios_stream_noone_home:
+  sequence:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: device_tracker.kenneths_iphone_7
+        state: 'not_home'
+      - condition: state
+        entity_id: device_tracker.dianes_privat
+        state: 'not_home'
+    - service: notify.idevices
+      data_template:
+        title: '{{ title }}'
+        message: "{{ message }} {{ now().strftime(\"%d-%m-%y %H:%M:%H\") }}"
+        data:
+          attachment:
+            content-type: jpeg
+          push:
+            category: camera
+            badge: '{{ badge }}'
+          entity_id: '{{ camera }}'
+            
+      

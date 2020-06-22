@@ -1,0 +1,78 @@
+- alias: 'Turn On Workshop from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_switch
+      event: 1002
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.workshop
+        brightness_pct: 100
+
+- alias: 'Increase brightness Workshop from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_switch
+      event: 2001
+  action:
+    - service: deconz.configure
+      data:
+        entity: light.workshop
+        field: "/action"
+        data: {"bri_inc":254, "transitiontime":50}
+
+- alias: 'Decrease brightness Workshop from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_switch
+      event: 3001
+  action:
+    - service: deconz.configure
+      data:
+        entity: light.workshop
+        field: "/action"
+        data: {"bri_inc":-254, "transitiontime":50}
+
+- alias: 'Stop brightness Workshop from dimmer'
+  initial_state: 'on'
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: workshop_switch
+        event: 2003
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: workshop_switch
+        event: 3003
+  action:
+    - service: deconz.configure
+      data:
+        entity: light.workshop
+        field: "/action"
+        data: {"bri_inc":0}
+          
+- alias: 'Turn Off Workshop from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: workshop_switch
+      event: 4002
+  action:
+    - service: light.turn_off
+      entity_id:
+          - light.workshop
+

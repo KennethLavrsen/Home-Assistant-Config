@@ -1,0 +1,339 @@
+# The commented scripts script.announce_mixed_google_stream
+# can be used if the Alexa announcement suddenly stops working
+# which is depending on a custom component
+# The parameters support both scripts
+
+- alias: 'Someone Button on Neopixelbox'
+  initial_state: true
+  trigger:
+    platform: mqtt
+    topic: neopixelbox/someone
+    payload: 'toggle'
+  action:
+    - service: input_boolean.toggle
+      data:
+        entity_id: input_boolean.announce_someone
+
+
+- alias: 'Screen Door Open'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.screen_door
+      from: 'off'
+      to: 'on'
+  action:
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'screen_door.mp3'
+        message: 'Screen door opened'
+        cameraentity: 'camera.camera_1'
+
+
+- alias: 'Someone at the front door'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_hue
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_rf
+      state: 'on'
+    - condition: state
+      entity_id: timer.patio_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.patio_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_front_door.mp3'
+        message: 'Someone at the front door'
+        cameraentity: 'camera.camera_1'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at the front door'
+        message: 'Someone at the front door'
+        badge: 3
+        camera: 'camera.camera_1'
+
+
+- alias: 'Someone at the front door RF'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_rf
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_hue
+      state: 'on'
+    - condition: state
+      entity_id: timer.patio_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.patio_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_front_door.mp3'
+        message: 'Someone at the front door'
+        cameraentity: 'camera.camera_1'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at the front door'
+        message: 'Someone at the front door'
+        badge: 3
+        camera: 'camera.camera_1'
+
+
+- alias: 'Someone at bicycles Z'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_z
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_rf
+      state: 'on'
+    - condition: state
+      entity_id: timer.bicycle_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.bicycle_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_bicycles.mp3'
+        message: 'Someone at the bicycles'
+        cameraentity: 'camera.camera_5'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at bicycles'
+        message: 'Someone at bicycles'
+        badge: 3
+        camera: 'camera.camera_5'
+
+
+- alias: 'Someone at bicycles RF'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_rf
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_z
+      state: 'on'
+    - condition: state
+      entity_id: timer.bicycle_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.bicycle_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_bicycles.mp3'
+        message: 'Someone at the bicycles'
+        cameraentity: 'camera.camera_5'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at bicycles'
+        message: 'Someone at bicycles'
+        badge: 3
+        camera: 'camera.camera_5'
+
+        
+- alias: 'Someone at the back yard Door Hue'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backyard_motion_hue
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.backyard_door_motion_timeout
+      state: 'off'
+    - condition: state
+      entity_id: timer.backyard_door_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.backyard_door_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_backyard.mp3'
+        message: 'Someone in the back yard'
+        cameraentity: 'camera.camera_4'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at the back yard door'
+        message: 'Someone at the back yard door'
+        badge: 3
+        camera: 'camera.camera_4'
+
+
+- alias: 'Someone at the back yard Door RF'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backyard_door_motion_rf
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.backyard_motion_hue
+      state: 'on'
+    - condition: state
+      entity_id: timer.backyard_door_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.backyard_door_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_backyard.mp3'
+        message: 'Someone in the back yard'
+        cameraentity: 'camera.camera_4'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at the back yard door'
+        message: 'Someone at the back yard door'
+        badge: 3
+        camera: 'camera.camera_4'
+        
+        
+- alias: 'Start backyard shed debounce timer'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.backyard_motion_z
+        - binary_sensor.backyard_shed_motion_hue
+      to: 'on'
+  action:
+    - delay:
+        # Supports milliseconds, seconds, minutes, hours, days
+        milliseconds: 500
+    - service: timer.start
+      data:
+        entity_id: timer.backyard_shed_debounce
+        duration: '00:00:15'
+
+
+- alias: 'Someone at the bedroom window Z'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backyard_motion_z
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: timer.backyard_shed_debounce
+      state: 'active'
+    - condition: state
+      entity_id: timer.backyard_shed_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.backyard_shed_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_bedroom.mp3'
+        message: 'Someone at the bedroom window'
+        cameraentity: 'camera.camera_6'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at the bedroom window'
+        message: 'Someone at the bedroom window'
+        badge: 3
+        camera: 'camera.camera_6'
+
+
+- alias: 'Someone at the bedroom window hue'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.backyard_shed_motion_hue
+      from: 'off'
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.announce_someone
+      state: 'on'
+    - condition: state
+      entity_id: timer.backyard_shed_debounce
+      state: 'active'
+    - condition: state
+      entity_id: timer.backyard_shed_motion
+      state: 'idle'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.backyard_shed_motion
+    - service: script.announce_mixed_both_streams
+#    - service: script.announce_mixed_google_stream
+      data:
+        audiofile: 'someone_bedroom.mp3'
+        message: 'Someone at the bedroom window'
+        cameraentity: 'camera.camera_6'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Someone at the bedroom window'
+        message: 'Someone at the bedroom window'
+        badge: 3
+        camera: 'camera.camera_6'
+
+
+- alias: 'Trigger Camera Timeout'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.camera_timeout
+  action:
+    - service: media_player.turn_off
+      data:
+        entity_id: media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
+

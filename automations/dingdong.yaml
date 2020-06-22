@@ -1,0 +1,45 @@
+- alias: 'Ding Dong'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: ding_dong
+      event: 1000
+  action:
+    - service: media_player.play_media
+      data:
+        entity_id:
+          - media_player.echo_hallway
+          - media_player.echo_office
+          - media_player.echo_living_room
+          - media_player.echo_kitchen
+          - media_player.echo_workshop
+          - media_player.echo_bedroom
+          - media_player.echo_portable
+        media_content_type: sound
+        media_content_id: amzn_sfx_doorbell_chime_02
+    - service: media_player.play_media
+      data:
+        entity_id:
+          - media_player.echo_hallway
+          - media_player.echo_office
+          - media_player.echo_living_room
+          - media_player.echo_kitchen
+          - media_player.echo_workshop
+          - media_player.echo_bedroom
+          - media_player.echo_portable
+        media_content_type: sound
+        media_content_id: amzn_sfx_doorbell_chime_02
+    - service: script.announce_mixed_google_stream
+      data:
+        message: "Ding Dong"
+        audiofile: 'dingdong.mp3'
+        cameraentity: 'camera.camera_1'
+    - service: script.notify_ios_stream_noone_home
+      data:
+        title: 'Ding Dong Doorbell'
+        message: 'Ding Dong Doorbell'
+        badge: 5
+        camera: 'camera.camera_1'
+

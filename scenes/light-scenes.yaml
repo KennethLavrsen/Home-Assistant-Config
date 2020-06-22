@@ -1,0 +1,97 @@
+# Scenes
+
+- name: Living Room Normal
+  entities:
+    light.best:
+      state: on
+      brightness: 255
+      color_temp: 370
+    light.shelf_system_left:
+      state: on
+      brightness: 255
+      rgb_color: [182,236,255]
+    light.shelf_system_right:
+      state: on
+      brightness: 255
+      rgb_color: [255,200,145]
+    light.ph:
+      state: on
+      brightness: 255
+      color_temp: 370
+    light.sofa:
+      state: on
+      brightness: 135
+      color_temp: 370
+    light.strip:
+      state: on
+      brightness: 255
+      rgb_color: [226,255,145]
+    light.floor_lamp:
+      state: on
+    light.shelf_system_low: on
+      
+
+- name: Evening
+  entities:
+    light.ceiling_1:
+      state: on
+      brightness: 80
+    light.best:
+      state: on
+      brightness: 255
+    light.shelf_system_left:
+      state: on
+      brightness: 255
+    light.ph:
+      state: on
+      brightness: 200
+    light.sofa:
+      state: on
+      brightness: 135
+      color_temp: 370
+    light.strip:
+      state: on
+      brightness: 255
+    light.floor_lamp:
+      state: on
+    light.makeup:
+      state: on
+      brightness: 255
+    light.terrace:
+      state: on
+      brightness: 255
+    light.entrance_ceiling: on
+    light.sink_left:
+      state: on
+      brightness: 200
+    light.sink_right:
+      state: on
+      brightness: 200
+#   light.xmas:
+#     state: on
+      
+- name: Morning
+  entities:
+    light.shelf_system_left:
+      state: on
+      brightness: 255
+    light.sofa:
+      state: on
+      brightness: 135
+      color_temp: 370
+    light.strip:
+      state: on
+      brightness: 100
+    light.floor_lamp:
+      state: on
+    light.terrace:
+      state: on
+      brightness: 255
+    light.sink_left:
+      state: on
+      brightness: 100
+    light.sink_right:
+      state: on
+      brightness: 100
+#    light.xmas:
+#      state: on

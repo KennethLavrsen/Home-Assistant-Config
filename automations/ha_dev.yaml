@@ -1,0 +1,43 @@
+- alias: 'Restart HA'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: ha_dev_control
+      event: 1001
+  action:
+    - service: homeassistant.restart
+     
+- alias: 'Reload Scripts'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: ha_dev_control
+      event: 2001
+  action:
+    - service: script.reload
+    
+- alias: 'Refresh Deconz'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: ha_dev_control
+      event: 3001
+  action:
+    - service: deconz.device_refresh
+    
+- alias: 'Reload Automations'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: ha_dev_control
+      event: 4001
+  action:
+    - service: automation.reload

@@ -1,0 +1,45 @@
+# Here we stream cameras to Google and audio to Google
+# Video to the screens and audio to the speakers. Once day I may learn how to create a stream with the audio embedded
+announce_mixed_google_stream:
+  sequence:
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_timeout
+    - service: timer.start
+      data:
+        entity_id: timer.camera_timeout
+    - service: media_player.turn_on
+      data:
+        entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.office_speaker, media_player.bathroom_speaker, media_player.workshop_speaker, media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
+    - service: camera.play_stream
+      data_template:
+        entity_id: "{{ cameraentity }}"
+        media_player: media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
+#    - delay:
+#        milliseconds: 1000
+    - service: media_player.play_media
+      data_template:
+        entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.office_speaker, media_player.bathroom_speaker, media_player.workshop_speaker
+        media_content_id: http://192.168.1.15:8123/local/{{ audiofile }}
+        media_content_type: audio/mp3
+
+# Here we stream cameras to Google and audio to Alexa 
+announce_mixed_both_streams:
+  sequence:
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_timeout
+    - service: timer.start
+      data:
+        entity_id: timer.camera_timeout
+    - service: notify.alexa_media_everywhere
+      data_template:
+        data:
+          type: announce
+        message: '{{ message }}'
+    - service: camera.play_stream
+      data_template:
+        entity_id: "{{ cameraentity }}"
+        media_player: media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
+
+

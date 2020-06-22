@@ -1,0 +1,51 @@
+# Automations for humidifier
+# This automation script runs when a value is received via MQTT topic humidifier/rising 
+# It sets the value slider on the GUI.
+- alias: Set humidifier rising
+  trigger:
+    platform: mqtt
+    topic: 'humidifier/rising'
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.humidifier_rising
+      value: "{{ trigger.payload }}"
+
+# This second automation script runs when the rising humidifier slider is moved.
+# It publishes its value to the MQTT topic that sets the humidifier rising value
+- alias: Humidifier rising slider moved
+  trigger:
+    platform: state
+    entity_id: input_number.humidifier_rising
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: 'humidifier/set/rising'
+      retain: false
+      payload: "{{ states('input_number.humidifier_rising') | int }}"
+
+
+# This automation script runs when a value is received via MQTT topic humidifier/falling
+# It sets the value slider on the GUI.
+- alias: Set humidifier falling
+  trigger:
+    platform: mqtt
+    topic: 'humidifier/falling'
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.humidifier_falling
+      value: "{{ trigger.payload }}"
+
+# This second automation script runs when the falling humidifier slider is moved.
+# It publishes its value to the MQTT topic that sets the humidifier falling value
+- alias: Humidifier falling slider moved
+  trigger:
+    platform: state
+    entity_id: input_number.humidifier_falling
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: 'humidifier/set/falling'
+      retain: false
+      payload: "{{ states('input_number.humidifier_falling') | int }}"

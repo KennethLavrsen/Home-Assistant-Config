@@ -1,0 +1,11 @@
+- alias: 'Reset Chromecast Volume'
+  initial_state: true
+  trigger:
+    platform: time_pattern
+    minutes: '/10'
+  condition:
+    - condition: state
+      entity_id: media_player.chromecast_living_room
+      state: 'off'
+  action:
+    - service: script.set_chromecast_volume

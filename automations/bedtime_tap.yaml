@@ -1,0 +1,68 @@
+- alias: 'Kenneth Sneaks To Bed'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_bedtime
+      event: 16
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.bed_kenneth
+        brightness_pct: 20
+        
+- alias: 'Turn On Front Door Bedtime Tap'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_bedtime
+      event: 17
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.entrance_ceiling
+          - light.terrace
+        brightness_pct: 100
+
+- alias: 'Turn Off Front Door Bedtime Tap'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_bedtime
+      event: 18
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.entrance_ceiling
+          - light.terrace
+
+- alias: 'Bedtime'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: tap_bedtime
+      event: 34
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.kitchen
+          - light.living_room
+          - light.workshop
+          - light.utility_room
+          - light.office
+          - light.hallway
+          - light.entrance_ceiling
+          
+
+

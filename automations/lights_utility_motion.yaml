@@ -1,0 +1,44 @@
+# Utility auto lights
+
+- alias: 'Utility room light on motion' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.utility_room_motion
+      to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.utility_ceiling
+        brightness_pct: 100
+    - service: timer.cancel
+      entity_id: timer.utility_room_light
+
+
+- alias: 'Utility Room motion start timer' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.utility_room_motion
+      to: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.utility_room_light
+        duration: '00:02:00'
+
+    
+- alias: 'Utility room light off motion' 
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.utility_room_light
+  action:
+    - service: light.turn_off
+      entity_id:
+        - light.utility_room
+ 
+

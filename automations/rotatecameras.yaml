@@ -1,0 +1,107 @@
+- alias: 'Turn Cameras Screen Door'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.screen_door
+      from: 'off'
+      to: 'on'
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "camera1/set"
+        retain: false
+        payload: 146
+    - service: mqtt.publish
+      data_template:
+        topic: "camera5/set"
+        retain: false
+        payload: 75
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_rotation_reset
+        
+- alias: 'Turn camera 5 hue sensor'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_hue
+      to: 'on'
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "camera5/set"
+        retain: false
+        payload: 75
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_rotation_reset
+        
+- alias: 'Turn camera 1 rf sensor'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_rf
+      to: 'on'
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "camera1/set"
+        retain: false
+        payload: 146
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_rotation_reset    
+    
+- alias: 'Turn camera 5 Z sensor'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_z
+      to: 'on'
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "camera5/set"
+        retain: false
+        payload: 130
+    - service: timer.cancel
+      data:
+        entity_id: timer.camera_rotation_reset
+        
+- alias: 'Start rotation timeout timer'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_hue
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.screen_door
+      to: 'off'
+    - platform: state
+      entity_id: binary_sensor.patio_motion_rf
+      to: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.camera_rotation_reset
+        duration: '00:02:00'
+        
+- alias: 'Camera Rotation Timeout'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.camera_rotation_reset
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "camera1/set"
+        retain: false
+        payload: 125
+    - service: mqtt.publish
+      data_template:
+        topic: "camera5/set"
+        retain: false
+        payload: 100
+        
+ 

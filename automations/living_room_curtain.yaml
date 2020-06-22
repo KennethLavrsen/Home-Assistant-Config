@@ -1,0 +1,116 @@
+#Five Button Switch
+- alias: 'Open Living Room Curtain 5'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_tradfri_remote
+        event: 2002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/set'
+        payload: "open"
+
+- alias: 'Close Living Room Curtain 5'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_tradfri_remote
+        event: 3002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/set'
+        payload: "close"
+
+- alias: 'Calibrate Living Room Curtain Open 5'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_tradfri_remote
+        event: 2003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/calibrate'
+        payload: "open"
+
+- alias: 'Calibrate Living Room Curtain Closed 5'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_tradfri_remote
+        event: 3003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/calibrate'
+        payload: "close"
+
+
+#Two Button Switch
+- alias: 'Open Living Room Curtain 2'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_curtain_switch
+        event: 1002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/set'
+        payload: "open"
+
+- alias: 'Close Living Room Curtain 2'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_curtain_switch
+        event: 2002
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/set'
+        payload: "close"
+
+- alias: 'Calibrate Living Room Curtain Open 2'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_curtain_switch
+        event: 1003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/calibrate'
+        payload: "open"
+
+- alias: 'Calibrate Living Room Curtain Closed 2'
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: living_room_curtain_switch
+        event: 2003
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'living-room-curtain/calibrate'
+        payload: "close"
+
+

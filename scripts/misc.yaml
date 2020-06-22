@@ -1,0 +1,29 @@
+#Script
+
+deconz_group_increase:
+  sequence:
+    service: deconz.configure
+    data:
+      entity: light.office
+      field: "/action"
+      data: {"bri_inc":254, "transitiontime":50}
+      #bridgeid: "00212EFFFF0409B5"
+      
+deconz_group_decrease:
+  sequence:
+    service: deconz.configure
+    data:
+      entity: light.office
+      field: "/action"
+      data: {"bri_inc":-254, "transitiontime":50}
+      #bridgeid: "00212EFFFF0409B5"
+      
+deconz_group_stop:
+  sequence:
+    service: deconz.configure
+    data:
+      entity: light.office
+      field: "/action"
+      data: {"bri_inc":0}
+      #bridgeid: "00212EFFFF0409B5"
+      

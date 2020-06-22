@@ -1,0 +1,45 @@
+# Workshop auto lights
+
+- alias: 'Workshop light on motion' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.workshop_motion
+      to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.workshop
+        brightness_pct: 100
+    - service: timer.cancel
+      entity_id: timer.workshop_light
+
+
+- alias: 'Workship motion start timer' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.workshop_motion
+      to: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.workshop_light
+        duration: '00:10:00'
+
+    
+- alias: 'Workshop light off motion' 
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.workshop_light
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.workshop
+        transition: 20
+

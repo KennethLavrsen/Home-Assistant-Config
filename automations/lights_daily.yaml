@@ -1,0 +1,96 @@
+# lights
+
+# First the conditions where we are not home    
+- alias: 'Light off at 0:30' 
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '00:30:00'
+  condition:
+    - condition: state
+      entity_id: person.diane
+      state: 'not_home'
+    - condition: state
+      entity_id: person.kenneth
+      state: 'not_home'
+  action:
+    - service: light.turn_off
+      entity_id: light.almost
+      
+- alias: 'Light on 7:00 if dark' 
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '07:00:00'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 20
+    - condition: state
+      entity_id: person.diane
+      state: 'not_home'
+    - condition: state
+      entity_id: person.kenneth
+      state: 'not_home'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.morning
+      
+- alias: 'Light terrace and xmas on 7:00 if dark' 
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '06:30:00'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 20
+  action:
+#    - service: light.turn_on
+#      entity_id: light.xmas
+    - service: light.turn_on
+      entity_id: light.terrace
+      
+- alias: 'Light off when light' 
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      above: 20
+  condition:
+    - condition: time
+      after: '07:00:00'
+      before: '14:00:00'
+    - condition: state
+      entity_id: person.diane
+      state: 'not_home'
+    - condition: state
+      entity_id: person.kenneth
+      state: 'not_home'
+  action:
+    - service: light.turn_off
+      entity_id: light.almost
+      
+# Now the conditions no matter if home or not
+# Turn this off if experimenting while Diane is in bed
+- alias: 'Light on when dark' 
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 35
+      for: "00:05:00"
+    - platform: state
+      entity_id: binary_sensor.darkness
+      to: 'on'
+  condition:
+    - condition: time
+      after: '14:00:00'
+      before: '22:00:00'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.evening
+
+
+
+

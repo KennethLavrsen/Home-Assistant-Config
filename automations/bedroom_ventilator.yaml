@@ -1,0 +1,10 @@
+- alias: Set bedroom ventilator speed
+  trigger:
+    platform: state
+    entity_id: input_number.bedroom_ventilator_speed
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: 'bedroom-ventilator/speed/set'
+      retain: false
+      payload: "{{ states('input_number.humidifier_rising') | int }}"

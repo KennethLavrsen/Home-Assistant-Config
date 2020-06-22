@@ -1,0 +1,36 @@
+#Script
+
+kitchen_easy:
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.kitchen_table
+          - light.microwave
+          - light.sink_left
+          - light.sink_right
+        brightness_pct: 80
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.hood
+    - service: light.turn_off
+      entity_id:
+        - light.vitrine
+
+office_normal:
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.makeup
+          - light.computer
+        brightness: 255
+        
+bedroom_easy:
+  sequence:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.bedroom
+        brightness_pct: 50

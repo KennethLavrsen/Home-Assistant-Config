@@ -1,0 +1,125 @@
+# Lights Terrace
+
+# Motion on any sensor turns on light
+- alias: 'Terrace light night motion Hue'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_hue
+      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.patio_motion_rf
+#      to: 'on'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.night_time
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.darkness
+      state: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: light.terrace
+    - service: timer.cancel
+      entity_id: timer.terrace_light
+     
+      
+- alias: 'Light off Terrace after 0:32' 
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '00:32:00'
+  condition:
+    - condition: state
+      entity_id: binary_sensor.patio_motion_rf
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_hue
+      state: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.terrace
+    
+    
+- alias: 'Start timeout terrace after 0:32 hue motion stops' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.pation_motion_hue
+      to: 'off'
+  condition:
+    - condition: time
+      after: '00:32:00'
+      before: '07:00:00'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_rf
+      state: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.terrace_light
+        duration: '00:05:00'
+
+- alias: 'Start timeout terrace after 0:32 RF motion stops' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.patio_motion_rf
+      to: 'off'
+  condition:
+    - condition: time
+      after: '00:32:00'
+      before: '07:00:00'
+    - condition: state
+      entity_id: binary_sensor.patio_motion_hue
+      state: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.terrace_light
+        duration: '00:05:00'
+        
+
+- alias: 'Terrace light off at timeout' 
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.terrace_light
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.terrace
+      
+- alias: 'Light on terrace 7:00 if dark' 
+  initial_state: true
+  trigger:
+    - platform: time
+      at: '07:00:00'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 20
+  action:
+    - service: light.turn_on
+      entity_id: light.terrace
+      
+- alias: 'Light off terrace when light' 
+  initial_state: true
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      above: 25
+  condition:
+    - condition: time
+      after: '07:00:00'
+      before: '15:00:00'
+  action:
+    - service: light.turn_off
+      entity_id: light.terrace
+
+
+
+

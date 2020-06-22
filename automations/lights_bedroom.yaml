@@ -1,0 +1,25 @@
+# Lights Bedroom
+
+- alias: 'Bedroom first evening light on' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.bedroom_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: light.ceiling_1
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_2
+      state: 'off'
+    - condition: state
+      entity_id: light.ceiling_3
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.bedroom
+        brightness_pct: 50
+     
+

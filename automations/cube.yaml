@@ -1,0 +1,236 @@
+# Cube Automations
+
+- alias: 'Cube volume mode timeout'
+  initial_state: 'on'
+  trigger:
+    platform: template
+    value_template: "{{ not is_state('input_select.cube_volume_control_mode', 'None') }}"
+    for:
+      seconds: 15
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: None
+
+- alias: 'Cube Set volume mode to VU'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [1000, 1001, 1002, 1003, 1004, 1005, 1006] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: VU
+        
+- alias: 'Cube Set volume mode to Chromecast'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [4000, 4001, 4002, 4003, 4004, 4005, 4006] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: Chromecast
+        
+- alias: 'Cube Rotate Clockwise in VU Mode'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_rotation
+  condition:
+    - condition: state
+      entity_id: input_select.cube_volume_control_mode
+      state: 'VU'
+    - condition: template
+      value_template: >
+        {{ trigger.event.data.event | int > 0 }}
+  action:
+    service: remote.send_command
+    data:
+      entity_id: remote.harmony_hub
+      device: "Vu+ DVR"
+      command:
+        - VolumeUp
+
+- alias: 'Cube Rotate Counter Clockwise in VU mode'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_rotation
+  condition:
+    - condition: state
+      entity_id: input_select.cube_volume_control_mode
+      state: 'VU'
+    - condition: template
+      value_template: >
+        {{ trigger.event.data.event | int < 0 }}
+  action:
+    service: remote.send_command
+    data:
+      entity_id: remote.harmony_hub
+      device: "Vu+ DVR"
+      command:
+        - VolumeDown
+        
+- alias: 'Cube Rotate Clockwise in Chromecast Mode'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_rotation
+  condition:
+    - condition: state
+      entity_id: input_select.cube_volume_control_mode
+      state: 'Chromecast'
+    - condition: template
+      value_template: >
+        {{ trigger.event.data.event | int > 0 }}
+  action:
+    - service: media_player.volume_up
+      entity_id: media_player.chromecast_living_room
+
+- alias: 'Cube Rotate Counter Clockwise in Chromecast mode'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_rotation
+  condition:
+    - condition: state
+      entity_id: input_select.cube_volume_control_mode
+      state: 'Chromecast'
+    - condition: template
+      value_template: >
+        {{ trigger.event.data.event | int < 0 }}
+  action:
+    - service: media_player.volume_down
+      entity_id: media_player.chromecast_living_room
+    
+- alias: 'Cube Turn On TV'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [1001] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: remote.turn_on
+      entity_id: remote.harmony_hub
+      data:
+        activity: "Watch TV"
+        
+- alias: 'Cube Turn On Chromecast'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [4004] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: remote.turn_on
+      entity_id: remote.harmony_hub
+      data:
+        activity: "Watch Chromecast"
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: None
+        
+- alias: 'Cube Turn On Airport'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [5005] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: remote.turn_on
+      entity_id: remote.harmony_hub
+      data:
+        activity: "Listen to Airport"
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: None
+        
+- alias: 'Cube Turn On Squeezebox'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [3003] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: remote.turn_on
+      entity_id: remote.harmony_hub
+      data:
+        activity: "Listen to Squeezebox"
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: None
+
+- alias: 'Cube Turn Off TV'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: magic_cube_gestures
+  condition:
+    condition: template
+    value_template: >
+      {% set valid_events = [6006] %}
+      {{ trigger.event.data.event in valid_events }}
+  action:
+    - service: remote.turn_on
+      entity_id: remote.harmony_hub
+      data:
+        activity: "PowerOff"
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.cube_volume_control_mode
+        option: None

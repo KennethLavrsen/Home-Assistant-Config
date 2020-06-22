@@ -1,0 +1,122 @@
+# Living room light when walking in
+      
+# If we are in automatic evening mode in living room
+# and it is dark
+# and we walk in then turn to normal scene
+- alias: 'Change Living Room To Normal' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'on'
+  condition:
+    - condition: time
+      after: '14:00:00'
+      before: '22:00:00'
+    - condition: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 25
+    - condition: state
+      entity_id: light.shelf_system_right
+      state: 'off'
+    - condition: state
+      entity_id: light.shelf_system_low
+      state: 'off'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.living_room_normal
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.floor_lamp
+        brightness: 100
+
+- alias: 'Weak night light Living Room ON' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'on'
+  condition:
+    - condition: time
+      after: '22:00:00'
+      before: '06:00:00'
+    - condition: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 25
+    - condition: state
+      entity_id: switch.shelf_system_low
+      state: 'off'
+    - condition: state
+      entity_id: light.ph
+      state: 'off'
+    - condition: state
+      entity_id: light.floor_lamp
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.sofa
+        brightness: 30
+    - service: light.turn_on
+      data:
+        entity_id: light.strip
+        brightness: 30
+    - service: timer.cancel
+      entity_id: timer.living_room_night_light    
+        
+- alias: 'Weak night light Living Room Timer' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'off'
+  condition:
+    - condition: time
+      after: '22:00:00'
+      before: '06:00:00'
+    - condition: numeric_state
+      entity_id: sensor.patio_luminance_hue
+      below: 25
+    - condition: state
+      entity_id: switch.shelf_system_low
+      state: 'off'
+    - condition: state
+      entity_id: light.ph
+      state: 'off'
+    - condition: state
+      entity_id: light.floor_lamp
+      state: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.living_room_night_light
+        duration: '00:01:00'
+        
+
+# We turn light off at timeout only if night and we did not turn on normal lights        
+- alias: 'Weak night light Living Room OFF' 
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.living_room_night_light
+  condition:
+    - condition: state
+      entity_id: switch.shelf_system_low
+      state: 'off'
+    - condition: state
+      entity_id: light.ph
+      state: 'off'
+    - condition: state
+      entity_id: light.floor_lamp
+      state: 'off'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.sofa
+          - light.strip
+
+

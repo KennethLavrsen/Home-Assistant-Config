@@ -1,0 +1,9 @@
+# Chromecast always starts after many hours with volume at 100%
+# This script is run periodicly by HA so that we normally always
+# find the Chromecast set to a more comfortable start value of 30%
+set_chromecast_volume:
+  sequence:
+    - service: media_player.volume_set
+      entity_id: media_player.chromecast_living_room
+      data:
+        volume_level: 0.3

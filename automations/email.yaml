@@ -1,0 +1,23 @@
+- alias: 'Fetch Email by Voice'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.fetch_email
+      to: 'on'
+  action:
+    - service: mqtt.publish
+      data:
+        topic: 'shuttlemail/kenneth'
+        payload: 'get_mail_kenneth'
+        retain: false
+        qos: 0
+    - delay:
+        seconds: 10
+    - service: mqtt.publish
+      data:
+        topic: 'shuttlemail/diane'
+        payload: 'get_mail_diane'
+        retain: false
+        qos: 0
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.fetch_email

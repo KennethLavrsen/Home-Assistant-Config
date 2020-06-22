@@ -1,0 +1,229 @@
+- alias: 'Alarm - Pending Arming/Siren'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      from: 'disarmed'
+      to: 'arming'
+  action:
+    - service: mqtt.publish
+      data:
+        topic: "alarm/alarmmode"
+        payload: "arming"
+        retain: true
+    - service: input_boolean.turn_on
+      data:
+        entity_id:  input_boolean.announce_someone
+    - service: script.play_mp3_google
+      data:
+        file: 'armed45.mp3'
+    - delay:
+        seconds: 15
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: arming
+    - service: script.play_mp3_google
+      data:
+        file: '30seconds.mp3'
+    - delay:
+        seconds: 10
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: arming
+    - service: script.play_mp3_google
+      data:
+        file: '20seconds.mp3'
+    - delay:
+        seconds: 10
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: arming
+    - service: script.play_mp3_google
+      data:
+        file: '10seconds.mp3'
+
+
+- alias: 'Alarm - Trigger while armed away by Motion'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hallway_motion
+        - binary_sensor.entrance_motion
+        - binary_sensor.kitchen_motion
+        - binary_sensor.living_room_motion
+        - binary_sensor.office_sensor_motion
+        - binary_sensor.utility_room_motion
+        - binary_sensor.bedroom_motion
+        - binary_sensor.workshop_motion
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: armed_away
+    - condition: state
+      entity_id: timer.indoor_motion_sense
+      state: 'active'
+  action:
+    - service: script.alarm_triggered
+    
+- alias: 'Alarm - Trigger while armed away Doors Windows'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.bedroom_window
+        - binary_sensor.kitchen_window
+        - binary_sensor.office_window
+        - binary_sensor.workshop_window
+        - binary_sensor.front_door
+        - binary_sensor.front_door_lock
+        - binary_sensor.utility_door
+        - binary_sensor.utility_lock
+        - binary_sensor.patio_door
+      to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: armed_away
+  action:
+    - service: script.alarm_triggered
+
+- alias: 'Alarm - Armed'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'armed_away'
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'armed_home'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.home_assistant_uptime
+      above: 1
+  action:
+    - service: mqtt.publish
+      data:
+        topic: "alarm/alarmmode"
+        payload: "armed_away"
+        retain: true
+    - service: alarm_control_panel.alarm_arm_away
+      entity_id: alarm_control_panel.alexa_guard_ac61d
+    - service: script.play_mp3_google
+      data:
+        file: 'armed.mp3'
+    - service: amcrest.goto_preset
+      data:
+        entity_id: camera.amcrest_1
+        preset: 2
+        
+
+- alias: 'Alarm - Alarm is Triggered'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'triggered'
+  action:
+    - service: mqtt.publish
+      data:
+        topic: "alarm/alarmmode"
+        payload: "triggered"
+        retain: true
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        title: "The Alarm System has been triggered"
+        message: "A window or door has been opened"
+        data:
+          push:
+            badge: 9
+    - service: notify.mobile_app_diane_s_privat
+      data:
+        title: "The Alarm System has been triggered"
+        message: "A window or door has been opened"
+        data:
+          push:
+            badge: 9
+    - service: switch.turn_on
+      entity_id: switch.kitchen_siren
+    - service: switch.turn_on
+      entity_id: switch.office_siren
+
+
+- alias: 'Alarm - Disarming'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: 'disarmed'
+  action:
+    - service: mqtt.publish
+      data:
+        topic: "alarm/alarmmode"
+        payload: "disarmed"
+        retain: true
+    - service: switch.turn_off
+      entity_id: switch.kitchen_siren
+    - service: switch.turn_off
+      entity_id: switch.office_siren
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.alexa_guard_ac61d
+    - service: script.play_mp3_google
+      data:
+        file: 'disarmed.mp3'
+    - service: amcrest.goto_preset
+      data:
+        entity_id: camera.amcrest_1
+        preset: 4
+
+
+- alias: 'NFC Reader'
+  initial_state: true
+  trigger:
+    platform: mqtt
+    topic: "alarm/nfcid"
+  condition:
+    condition: or
+    conditions:
+      condition: template
+      value_template: "{{ trigger.payload == 'aaaaaaaa' or trigger.payload == 'bbbbbbbb' or trigger.payload == 'cccccccc' or trigger.payload == 'dddddddd' }}"
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.alarm
+ 
+ 
+- alias: 'Voice controlled alarm enable'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: input_boolean.enable_alarm_system
+      to: 'on'
+  action:
+    - service: alarm_control_panel.alarm_arm_away
+      entity_id: alarm_control_panel.alarm
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.enable_alarm_system
+
+- alias: 'Start indoor motion sensor timer'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hallway_motion
+        - binary_sensor.entrance_motion
+        - binary_sensor.kitchen_motion
+        - binary_sensor.living_room_motion
+        - binary_sensor.office_sensor_motion
+        - binary_sensor.utility_room_motion
+        - binary_sensor.bedroom_motion
+        - binary_sensor.workshop_motion
+      to: 'on'
+  action:
+    - delay:
+        # Supports milliseconds, seconds, minutes, hours, days
+        milliseconds: 500
+    - service: timer.start
+      data:
+        entity_id: timer.indoor_motion_sense
+        duration: '00:03:00'

@@ -1,0 +1,23 @@
+- alias: 'Flush Toilet Button Short'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: toilet_flusher
+      event: 2002
+  action:
+    - service: switch.turn_on
+      entity_id: switch.short_toilet_flush
+      
+- alias: 'Flush Toilet Button Long'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: toilet_flusher
+      event: 1002
+  action:
+    - service: switch.turn_on
+      entity_id: switch.long_toilet_flush

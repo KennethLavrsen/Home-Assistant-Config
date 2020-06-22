@@ -1,0 +1,81 @@
+# Note Closet is a single light and not group
+# so we use state instead of action for Deconz service
+
+- alias: 'Turn On Closet from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: closet_switch
+      event: 1002
+  action:
+    - service: light.turn_on
+      data:
+        entity_id:
+          - light.closet
+        brightness_pct: 100
+
+- alias: 'Increase brightness Closet from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: closet_switch
+      event: 2001
+  action:
+    - service: deconz.configure
+      data:
+        entity: light.closet
+        field: "/state"
+        data: {"bri_inc":254, "transitiontime":50}
+
+- alias: 'Decrease brightness Closet from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: closet_switch
+      event: 3001
+  action:
+    - service: deconz.configure
+      data:
+        entity: light.closet
+        field: "/state"
+        data: {"bri_inc":-254, "transitiontime":50}
+
+- alias: 'Stop brightness Closet from dimmer'
+  initial_state: 'on'
+  trigger:
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: closet_switch
+        event: 2003
+    - platform: event
+      event_type: deconz_event
+      event_data:
+        id: closet_switch
+        event: 3003
+  action:
+    - service: deconz.configure
+      data:
+        entity: light.closet
+        field: "/state"
+        data: {"bri_inc":0}
+          
+- alias: 'Turn Off Closet from dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: closet_switch
+      event: 4002
+  action:
+    - service: light.turn_off
+      entity_id:
+          - light.closet
+

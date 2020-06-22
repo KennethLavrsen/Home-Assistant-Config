@@ -1,0 +1,33 @@
+- alias: 'Turn On Entire House'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: entire_house
+      event: 1002
+  action:
+    - service: light.turn_on
+      entity_id:
+        - light.entire_house
+        
+- alias: 'Turn Off Entire House'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: entire_house
+      event: 2002
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.kitchen
+          - light.living_room
+          - light.workshop
+          - light.utility_room
+          - light.office
+          - light.hallway
+          - light.entrance_ceiling
+          - light.closet
