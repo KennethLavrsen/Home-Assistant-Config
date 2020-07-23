@@ -1,0 +1,10 @@
+- alias: 'Skide Smart'
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: plingeling
+      event: 1002
+  action:
+    - service: script.skide_smart

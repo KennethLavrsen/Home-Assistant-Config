@@ -1,68 +1,59 @@
-- alias: 'Turn On Office from tap normal'
+- alias: 'Office Tap'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: tap_office
-      event: 16
   action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.computer
-          - light.makeup
-        brightness_pct: 100
-    - service: light.turn_off
-      data:
-        entity_id:
-          - light.office_panel
-
-- alias: 'Turn On Office from tap bright 1'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: tap_office
-      event: 17
-  action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.computer
-          - light.makeup
-        brightness_pct: 100
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.office_panel
-        brightness_pct: 30
-        
-- alias: 'Turn On Office from tap bright 2'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: tap_office
-      event: 18
-  action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.office
-        brightness_pct: 60
-          
-- alias: 'Turn Off Office from tap'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: tap_office
-      event: 34
-  action:
-    - service: light.turn_off
-      entity_id:
-          - light.office
+    - choose:
+      # Turn On Office from tap normal
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 16 }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.computer
+                - light.makeup
+              brightness_pct: 100
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.office_panel
+      # Turn On Office from tap bright 1
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 17 }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.computer
+                - light.makeup
+              brightness_pct: 100
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.office_panel
+              brightness_pct: 30
+      # Turn On Office from tap bright 2
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 18 }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.office
+              brightness_pct: 60
+      # Turn Off Office from tap
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 34 }}"
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.office

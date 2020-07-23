@@ -6,7 +6,7 @@
 - platform: uptime
   name: Home Assistant Uptime
   unit_of_measurement: minutes
-
+  
 - platform: mqtt
   state_topic: "alarm/nfcid"
   name: "nfcmqtt"
@@ -30,6 +30,7 @@
   name: "Fan Temperature"
   state_topic: "fan/temperature"
   unit_of_measurement: '°C'
+
 
 
 - platform: mqtt
@@ -81,8 +82,8 @@
   device_class: temperature
 
 - platform: mqtt
-  name: "Office Pressure"
-  state_topic: "office-sensor/pressure"
+  name: "Air Pressure"
+  state_topic: "precision-thermometer/pressure"
   unit_of_measurement: 'hPa'
   device_class: pressure
   
@@ -91,7 +92,6 @@
   state_topic: "office-sensor/humidity"
   unit_of_measurement: '%'
   device_class: humidity
-  
   
 - platform: mqtt
   name: "Precision Thermometer TMP117"
@@ -104,6 +104,30 @@
   state_topic: "precision-thermometer/tsys01"
   unit_of_measurement: '°C'
   device_class: temperature
+  
+- platform: mqtt
+  name: "Precision Thermometer SHT31 Temperature"
+  state_topic: "precision-thermometer/sht31temp"
+  unit_of_measurement: '°C'
+  device_class: temperature
+  
+- platform: mqtt
+  name: "Precision Thermometer BME280 Temperature"
+  state_topic: "precision-thermometer/bme280temp"
+  unit_of_measurement: '°C'
+  device_class: temperature
+  
+- platform: mqtt
+  name: "Precision Thermometer SHT31 Humidity"
+  state_topic: "precision-thermometer/sht31hum"
+  unit_of_measurement: '%'
+  device_class: humidity
+  
+- platform: mqtt
+  name: "Precision Thermometer BME280 Humidity"
+  state_topic: "precision-thermometer/bme280hum"
+  unit_of_measurement: '%'
+  device_class: humidity
   
 - platform: mqtt
   name: "Precision Thermometer Average"
@@ -153,7 +177,7 @@
       friendly_name: Living Room Temperature Corrected
       unit_of_measurement: "°C"
       entity_id: sensor.living_room_temperature
-      value_template: "{{ (states('sensor.living_room_temperature')|float + 0.4) |round(1) }}"
+      value_template: "{{ (states('sensor.living_room_temperature')|float + 1.4) |round(1) }}"
 
 - platform: template
   sensors:
@@ -178,6 +202,60 @@
       unit_of_measurement: "°C"
       entity_id: sensor.workshop_temperature
       value_template: "{{ (states('sensor.workshop_temperature')|float + 1.8) |round(1)}}"
+      
+- platform: template
+  sensors:
+    kenneth_haapp_accuracy:
+      friendly_name: "Kenneth HA GPS Accuracy"
+      entity_id: device_tracker.kenneths_iphone_7
+      value_template: "{{ state_attr('device_tracker.kenneths_iphone_7', 'gps_accuracy') }}"
+      unit_of_measurement: meters
+      
+- platform: template
+  sensors:
+    kenneth_owntracks_accuracy:
+      friendly_name: "Kenneth Owntracks GPS Accuracy"
+      entity_id: device_tracker.kjl_iphone7
+      value_template: "{{ state_attr('device_tracker.kjl_iphone7', 'gps_accuracy') }}"
+      unit_of_measurement: meters
+      
+- platform: otp
+  name: Google OTP
+  token: !secret google_otppwd
+  
 
-
+- platform: mqtt
+  name: "Blitzwolf Energy Today"
+  state_topic: "tele/blitzwolf/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Today"] }}'
+  unit_of_measurement: "kWh"
+  
+- platform: mqtt
+  name: "Blitzwolf Energy Yesterday"
+  state_topic: "tele/blitzwolf/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Yesterday"] }}'
+  unit_of_measurement: "kWh"
+  
+- platform: mqtt
+  name: "Blitzwolf Energy Total"
+  state_topic: "tele/blitzwolf/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Total"] }}'
+  unit_of_measurement: "kWh"
+  
+- platform: mqtt
+  name: "Blitzwolf Power"
+  state_topic: "tele/blitzwolf/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Power"] }}'
+  unit_of_measurement: "W"
+  
+- platform: mqtt
+  name: "Blitzwolf Voltage"
+  state_topic: "tele/blitzwolf/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Voltage"] }}'
+  unit_of_measurement: "V"
+  
+- platform: mqtt
+  name: "Blitzwolf Power Factor"
+  state_topic: "tele/blitzwolf/SENSOR"
+  value_template: '{{ value_json["ENERGY"]["Factor"] }}'
 

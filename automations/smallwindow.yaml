@@ -6,11 +6,6 @@
       event_data:
         id: small_window_switch
         event: 1002
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: living_room_tradfri_remote
-        event: 5002
   action:
     - service: mqtt.publish
       data:
@@ -25,14 +20,8 @@
       event_data:
         id: small_window_switch
         event: 2002
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: living_room_tradfri_remote
-        event: 4002
   action:
     - service: mqtt.publish
       data:
         topic: 'smallwindow/set'
         payload: "close"
-

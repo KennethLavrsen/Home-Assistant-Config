@@ -1,283 +1,197 @@
-# Not home is 90%       
-- alias: 'Left Blinds Not Home Opple'
+- alias: 'Blinds Opple'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: blinds_opple
-      event: 4004
   action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "90"
-        
-- alias: 'Right Blinds Not Home Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 6004
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "90"
-        
-- alias: 'Both Blinds Not Home Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 2004
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "90"
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "90"
+    - choose:
+      # Left Blinds Not Home (90%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4004 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "90"
+      # Right Blinds Not Home (90%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 6004 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "90"
+      # Both Blinds Not Home (90%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2004 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "90"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "90"
+      # Left Blinds Close (0%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "0"
+      # Right Blinds Close (0%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "0"
+      # Both Blinds Close (0%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "0"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "0"
+      # Left Blinds Open (50%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "50"
+      # Right Blinds Open (50%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 6001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "50"
+      # Both Blinds Open (50%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "50"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "50"
 
+      # Left Blinds Closed (100%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3004 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "100"
+      # Right Blinds Closed (100%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5004 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "100"
+      # Both Blinds Closed (100%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1004 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/left'
+              payload: "100"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/set/right'
+              payload: "100"
 
-# Close to 0 %
-- alias: 'Both Blinds 0 Opple'
-  initial_state: 'on'
-  trigger:
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: blinds_opple
-        event: 1001
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "0"
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "0"
-        
-- alias: 'Left Blinds 0 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 3001
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "0"
-        
-- alias: 'Right Blinds 0 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 5001
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "0"
-        
-# Open to 50 %
-- alias: 'Both Blinds 50 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 2001
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "50"
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "50"
-        
-- alias: 'Left Blinds 50 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 4001
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "50"
-        
-- alias: 'Right Blinds 50 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 6001
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "50"   
-
-
-# Up and Down step 10
-- alias: 'Both Blinds Step Up Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 2002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/left'
-        payload: "10"
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/right'
-        payload: "10"
-
-- alias: 'Both Blinds Step Down Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 1002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/left'
-        payload: "-10"
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/right'
-        payload: "-10"
-
-- alias: 'Left Blinds Step Up Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 4002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/left'
-        payload: "10"
-        
-- alias: 'Left Blinds Step Down Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 3002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/left'
-        payload: "-10"      
-
-- alias: 'Right Blinds Step Up Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 6002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/right'
-        payload: "10"
-        
-- alias: 'Right Blinds Step Down Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 5002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/step/right'
-        payload: "-10"
-        
-        
-# Double click down = 100
-- alias: 'Both Blinds 100 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 1004
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "100"
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "100"
-        
-- alias: 'Left Blinds 100 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 3004
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/left'
-        payload: "100"
-        
-- alias: 'Right Blinds 100 Opple'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: blinds_opple
-      event: 5004
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'blinds/set/right'
-        payload: "100"
+      # Left Blinds Step Up (+10)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/left'
+              payload: "10"
+      # Right Blinds Step Up (+10)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 6002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/right'
+              payload: "10"
+      # Both Blinds Step Up (+10%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/left'
+              payload: "10"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/right'
+              payload: "10"
+      # Left Blinds Step Down (-10)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/left'
+              payload: "-10"
+      # Right Blinds Step Down (-10)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/right'
+              payload: "-10"
+      # Both Blinds Step Down (-10%)
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/left'
+              payload: "-10"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/right'
+              payload: "-10"

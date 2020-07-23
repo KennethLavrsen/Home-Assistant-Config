@@ -1,16 +1,13 @@
-# Note Closet is a single light and not group
-# so we use state instead of action for Deconz service
-
-- alias: 'Closet Dimmer'
+- alias: 'Bed Kenneth Dimmer'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
-      id: closet_switch
+      id: bed_left_switch
   action:
     - choose:
-      # Normal ON
+      # ON - Kenneth's side only
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.event == 1002 }}"
@@ -18,8 +15,18 @@
           - service: light.turn_on
             data:
               entity_id:
-                - light.closet
-              brightness_pct: 100
+                - light.bed_kenneth
+              brightness_pct: 30
+      # Long ON - Bedroom dimmed   
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.bedroom
+              brightness_pct: 30
       # Increase
       - conditions:
           - condition: template
@@ -27,8 +34,8 @@
         sequence:
           - service: deconz.configure
             data:
-              entity: light.closet
-              field: "/state"
+              entity: light.bedroom
+              field: "/action"
               data: {"bri_inc":254, "transitiontime":50}
       # Decrease
       - conditions:
@@ -37,10 +44,10 @@
         sequence:
           - service: deconz.configure
             data:
-              entity: light.closet
-              field: "/state"
+              entity: light.bedroom
+              field: "/action"
               data: {"bri_inc":-254, "transitiontime":50}
-      # Stop increase/decrease 
+      # Stop increase/decrease
       - conditions:
           - condition: template
             value_template: > 
@@ -49,16 +56,29 @@
         sequence:
           - service: deconz.configure
             data:
-              entity: light.closet
-              field: "/state"
+              entity: light.bedroom
+              field: "/action"
               data: {"bri_inc":0}
-      # Off
+      # OFF - Leaving Diane's side on
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.event == 4002 }}"
         sequence:
           - service: light.turn_off
             entity_id:
-                - light.closet
-
+                - light.bed_kenneth
+                - light.ceiling_1
+                - light.ceiling_2
+                - light.ceiling_3
+      # Long OFF - entire bedroom
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4001 }}"
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.bedroom
       #default:
+
+ 

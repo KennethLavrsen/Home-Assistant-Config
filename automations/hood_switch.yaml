@@ -1,4 +1,4 @@
-- alias: 'Entire House Switch'
+- alias: 'Hood Switch'
   initial_state: 'on'
   trigger:
     platform: event
@@ -14,20 +14,12 @@
         sequence:
           - service: light.turn_on
             entity_id:
-              - light.entire_house
+              - light.hood
       # OFF
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.event == 2002 }}"
         sequence:
           - service: light.turn_off
-            data:
-              entity_id:
-                - light.kitchen
-                - light.living_room
-                - light.workshop
-                - light.utility_room
-                - light.office
-                - light.hallway
-                - light.entrance_ceiling
-                - light.closet
+            entity_id:
+              - light.hood

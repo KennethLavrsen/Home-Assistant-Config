@@ -1,58 +1,45 @@
-
-        
-- alias: 'Office Blinds 0'
+- alias: 'Office Blinds Switch'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: office_blinds_switch
-      event: 2003
   action:
-    - service: mqtt.publish
-      data:
-        topic: 'office-blinds/set'
-        payload: "0"
-        
-- alias: 'Office Blinds 50'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: office_blinds_switch
-      event: 1003
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'office-blinds/set'
-        payload: "50"
-        
-- alias: 'Office Blinds Step Up'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: office_blinds_switch
-      event: 1002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'office-blinds/step'
-        payload: "10"
-        
-- alias: 'Office Blinds Step Down'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: office_blinds_switch
-      event: 2002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'office-blinds/step'
-        payload: "-10"   
-        
+    - choose:
+      # Office Blinds 50
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1003 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'office-blinds/set'
+              payload: "50"
+      # Office Blinds 0
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2003 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'office-blinds/set'
+              payload: "0"
+      # Office Blinds Step Up
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'office-blinds/step'
+              payload: "10"
+      # Office Blinds Step Down
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'office-blinds/step'
+              payload: "-10"

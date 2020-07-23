@@ -1,101 +1,80 @@
-- alias: 'Turn On Bathroom from dimmer normal'
+- alias: 'Bathroom Dimmer'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: bathroom_switch
-      event: 1002
   action:
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.bathroom_light_state
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.bathroom
-        brightness_pct: 100
+    - choose:
+      # Normal ON
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.bathroom_light_state
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.bathroom
+              brightness_pct: 100
+      # Long press dimmed on    
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+        sequence:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.bathroom_light_state
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.bathroom
+              brightness_pct: 50
+      # Increase  
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.bathroom
+              field: "/action"
+              data: {"bri_inc":254, "transitiontime":50}
+      # Decrease
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.bathroom
+              field: "/action"
+              data: {"bri_inc":-254, "transitiontime":50}
+      # Stop increase/decrease
+      - conditions:
+          - condition: template
+            value_template: > 
+              {{ trigger.event.data.event == 2003 or
+                 trigger.event.data.event == 3003 }}
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.bathroom
+              field: "/action"
+              data: {"bri_inc":0}
+      # Off
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+        sequence:
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.bathroom_light_state
+          - service: light.turn_off
+            entity_id:
+                - light.bathroom
 
-- alias: 'Turn On Bathroom from dimmer dimmed'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: bathroom_switch
-      event: 1001
-  action:
-    - service: input_boolean.turn_on
-      data:
-        entity_id: input_boolean.bathroom_light_state
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.bathroom
-        brightness_pct: 50
-
-- alias: 'Increase brightness Bathroom from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: bathroom_switch
-      event: 2001
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.bathroom
-        field: "/action"
-        data: {"bri_inc":254, "transitiontime":50}
-
-- alias: 'Decrease brightness Bathroom from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: bathroom_switch
-      event: 3001
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.bathroom
-        field: "/action"
-        data: {"bri_inc":-254, "transitiontime":50}
-
-- alias: 'Stop brightness Bathroom from dimmer'
-  initial_state: 'on'
-  trigger:
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: bathroom_switch
-        event: 2003
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: bathroom_switch
-        event: 3003
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.bathroom
-        field: "/action"
-        data: {"bri_inc":0}
-          
-- alias: 'Turn Off Bathroom from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: bathroom_switch
-      event: 4002
-  action:
-    - service: input_boolean.turn_off
-      data:
-        entity_id: input_boolean.bathroom_light_state
-    - service: light.turn_off
-      entity_id:
-          - light.bathroom
+      #default:

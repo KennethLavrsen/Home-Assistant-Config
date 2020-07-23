@@ -1,0 +1,111 @@
+- alias: 'Tradfri PH Dimmer'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: ph_dimmer
+  action:
+    - choose:
+      # Center Button PH ON
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+          - condition: state
+            entity_id: light.ph
+            state: 'off'
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.ph
+              brightness_pct: 80
+      # Center Button PH OFF
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+          - condition: state
+            entity_id: light.ph
+            state: 'on'
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.ph
+      # Increase PH
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.ph
+              field: "/state"
+              data: {"bri_inc":254, "transitiontime":50}
+      # Decrease PH
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.ph
+              field: "/state"
+              data: {"bri_inc":-254, "transitiontime":50}
+      # Stop increase/decrease PH
+      - conditions:
+          - condition: template
+            value_template: > 
+              {{ trigger.event.data.event == 2003 or
+                 trigger.event.data.event == 3003 }}
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.ph
+              field: "/state"
+              data: {"bri_inc":0}
+      # Blinds Increase
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/left'
+              payload: "10"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/right'
+              payload: "10"
+      # Blinds Decrease
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/left'
+              payload: "-10"
+          - service: mqtt.publish
+            data:
+              topic: 'blinds/step/right'
+              payload: "-10"
+      # Living Room Curtain Open
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'living-room-curtain/set'
+              payload: "open"
+      # Living Room Curtain Close
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4001 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'living-room-curtain/set'
+              payload: "close"
+      #default:

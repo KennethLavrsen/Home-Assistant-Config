@@ -1,81 +1,76 @@
-- alias: 'Turn On Living Room from dimmer'
+- alias: 'Living Room Dimmer'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: living_room_switch
-      event: 1002
   action:
-    - service: scene.turn_on
-      entity_id: scene.living_room_normal
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.floor_lamp
-        brightness: 100
+    - choose:
+      # Normal ON scene
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: scene.turn_on
+            entity_id: scene.living_room_normal
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.floor_lamp
+              brightness: 100
+      # Long press full brightness
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+        sequence:
+            - service: light.turn_on
+              data:
+                entity_id:
+                  - light.living_room
+                brightness_pct: 100
+      # Increase
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.living_room
+              field: "/action"
+              data: {"bri_inc":254, "transitiontime":50}
+      # Decrease
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.living_room
+              field: "/action"
+              data: {"bri_inc":-254, "transitiontime":50}
+      # Stop increase/decrease 
+      - conditions:
+          - condition: template
+            value_template: > 
+              {{ trigger.event.data.event == 2003 or
+                 trigger.event.data.event == 3003 }}
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.living_room
+              field: "/action"
+              data: {"bri_inc":0}
+      # Off
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.living_room
 
-- alias: 'Increase brightness Living Room from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: living_room_switch
-      event: 2001
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.living_room
-        field: "/action"
-        data: {"bri_inc":254, "transitiontime":50}
-
-- alias: 'Decrease brightness Living Room from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: living_room_switch
-      event: 3001
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.living_room
-        field: "/action"
-        data: {"bri_inc":-254, "transitiontime":50}
-
-- alias: 'Stop brightness Living Room from dimmer'
-  initial_state: 'on'
-  trigger:
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: living_room_switch
-        event: 2003
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: living_room_switch
-        event: 3003
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.living_room
-        field: "/action"
-        data: {"bri_inc":0}
-          
-- alias: 'Turn Off Living Room from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: living_room_switch
-      event: 4002
-  action:
-    - service: light.turn_off
-      entity_id:
-          - light.living_room
+      #default:
 
 

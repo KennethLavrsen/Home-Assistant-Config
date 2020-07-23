@@ -1,0 +1,11 @@
+location_update_kenneth:
+  sequence:
+    - service: notify.mobile_app_kenneth_s_iphone_7
+      data:
+        message: "request_location_update"
+        
+location_update_diane:
+  sequence:
+    - service: notify.mobile_app_diane_s_privat
+      data:
+        message: "request_location_update"

@@ -1,0 +1,91 @@
+# light control in Living Room with Tradfri remote
+- alias: 'Tradfri Round Remote Living'
+  initial_state: 'on'
+  trigger:
+    platform: event
+    event_type: deconz_event
+    event_data:
+      id: living_room_tradfri_remote
+  action:
+    - choose:
+      # Center Button ON
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+          - condition: state
+            entity_id: light.living_room
+            state: 'off'
+        sequence:
+          - service: scene.turn_on
+            entity_id: scene.living_room_normal
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.floor_lamp
+              brightness: 100
+      # Center Button OFF
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+          - condition: state
+            entity_id: light.living_room
+            state: 'on'
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.living_room
+      # Open Small Window
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 5002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'smallwindow/set'
+              payload: "open"
+      # Close Small Window
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'smallwindow/set'
+              payload: "close"
+      # Open Living Room Curtain
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'living-room-curtain/set'
+              payload: "open"
+      # Close Living Room Curtain
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'living-room-curtain/set'
+              payload: "close"
+      # Calibrate Living Room Curtain Open
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2003 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'living-room-curtain/calibrate'
+              payload: "open"
+      # Calibrate Living Room Curtain Closed
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3003 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'living-room-curtain/calibrate'
+              payload: "close"

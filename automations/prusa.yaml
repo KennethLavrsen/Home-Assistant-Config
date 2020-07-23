@@ -1,24 +1,24 @@
-- alias: 'Prusa Switch On'
-  initial_state: true
+- alias: 'Prusa Switch'
+  initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: prusa_switch
-      event: 1002
   action:
-    - service: switch.turn_on
-      entity_id: switch.prusa
-
-- alias: 'Prusa Switch Off'
-  initial_state: true
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: prusa_switch
-      event: 2002
-  action:
-    - service: switch.turn_off
-      entity_id: switch.prusa
+    - choose:
+      # ON
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: switch.turn_on
+            entity_id: switch.prusa
+      # OFF
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2002 }}"
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.prusa
       

@@ -1,130 +1,83 @@
-- alias: 'Turn On Kitchen from dimmer normal'
+- alias: 'Kitchen Dimmer'
   initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: kitchen_switch
-      event: 1002
   action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.kitchen_table
-          - light.microwave
-          - light.sink_left
-          - light.sink_right
-        brightness_pct: 80
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.hood
-    - service: light.turn_off
-      entity_id:
-        - light.vitrine
+    - choose:
+      # Normal ON dimmed and no Vitrine
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.kitchen_table
+                - light.microwave
+                - light.sink_left
+                - light.sink_right
+              brightness_pct: 80
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.hood
+          - service: light.turn_off
+            entity_id:
+              - light.vitrine
+      # Long press full brightness
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.kitchen
+              brightness_pct: 100
+      # Increase
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.kitchen
+              field: "/action"
+              data: {"bri_inc":254, "transitiontime":50}
+      # Decrease
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.kitchen
+              field: "/action"
+              data: {"bri_inc":-254, "transitiontime":50}
+      # Stop increase/decrease 
+      - conditions:
+          - condition: template
+            value_template: > 
+              {{ trigger.event.data.event == 2003 or
+                 trigger.event.data.event == 3003 }}
+        sequence:
+          - service: deconz.configure
+            data:
+              entity: light.kitchen
+              field: "/action"
+              data: {"bri_inc":0}
+      # Off
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4002 }}"
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id:
+                - light.kitchen
 
-
-- alias: 'Turn On Kitchen from dimmer bright'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: kitchen_switch
-      event: 1001
-  action:
-    - service: light.turn_on
-      data:
-        entity_id:
-          - light.kitchen
-        brightness_pct: 100
-
-- alias: 'Increase brightness Kitchen from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: kitchen_switch
-      event: 2001
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.kitchen
-        field: "/action"
-        data: {"bri_inc":254, "transitiontime":50}
-
-- alias: 'Decrease brightness Kitchen from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: kitchen_switch
-      event: 3001
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.kitchen
-        field: "/action"
-        data: {"bri_inc":-254, "transitiontime":50}
-
-- alias: 'Stop brightness Kitchen from dimmer'
-  initial_state: 'on'
-  trigger:
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: kitchen_switch
-        event: 2003
-    - platform: event
-      event_type: deconz_event
-      event_data:
-        id: kitchen_switch
-        event: 3003
-  action:
-    - service: deconz.configure
-      data:
-        entity: light.kitchen
-        field: "/action"
-        data: {"bri_inc":0}
-          
-- alias: 'Turn Off Kitchen from dimmer'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: kitchen_switch
-      event: 4002
-  action:
-    - service: light.turn_off
-      entity_id:
-        - light.kitchen
-        
-        
-- alias: 'Turn On Hood'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: hood
-      event: 1002
-  action:
-    - service: light.turn_on
-      entity_id:
-        - light.hood
-        
-- alias: 'Turn Off Hood'
-  initial_state: 'on'
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: hood
-      event: 2002
-  action:
-    - service: light.turn_off
-      entity_id:
-        - light.hood
+      #default:
+      

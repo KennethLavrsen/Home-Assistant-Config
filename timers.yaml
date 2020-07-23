@@ -8,9 +8,6 @@ living_room_night_light:
 terrace_light:
   duration: '00:05:00'
   
-rf_bridge_debounce:
-  duration: '00:00:05'
-  
 patio_motion:
   duration: '00:03:00'
   

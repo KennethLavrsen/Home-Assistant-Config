@@ -1,10 +1,10 @@
 #input_selects
 
-cube_volume_control_mode:
-  name: Cube Volume Control Mode
-  options:
-    - None
-    - VU
-    - Chromecast
-  initial: None
+#cube_volume_control_mode:
+#  name: Cube Volume Control Mode
+#  options:
+#    - None
+#    - VU
+#    - Chromecast
+#  initial: None
 

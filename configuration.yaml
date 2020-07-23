@@ -67,6 +67,23 @@ conversation:
 
 # Enables support for tracking state changes over time
 history:
+  include:
+    domains:
+     # - binary_sensor
+     # - sensor
+      - alarm_control_panel
+     # - cover
+     # - light
+     # - switch
+      #- media_player
+      - person
+     # - timer
+     # - zwave
+     # - input_boolean
+     # - input_select
+     # - input_number
+     # - input_text
+
 
 #Kenneth set this to keep 5 days data
 recorder:
@@ -78,6 +95,8 @@ recorder:
       - sensor.glostrup_s_train
       - sensor.byparken
       - sensor.home_assistant_uptime
+      - sensor.google_otp
+      - binary_sensor.amcrest_1_motion_detected
     event_types:
       - service_removed
       - service_executed

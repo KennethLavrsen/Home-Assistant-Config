@@ -1,0 +1,115 @@
+- alias: 'OpenMQTTGateway'
+  initial_state: true
+  mode: single
+  trigger:
+    platform: mqtt
+    topic: "OpenMQTTGateway/+/RFtoMQTT"
+  action:
+    - choose:
+      # Mini Remote Diane A
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 11111111}}'
+        sequence:
+          - service: switch.turn_on
+            entity_id: switch.entrance_ceiling
+          - service: light.turn_on
+            entity_id: light.hallway
+          - service: light.turn_on
+            entity_id: light.terrace
+      # Mini Remote Diane B
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 22222222}}'
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.entrance_ceiling
+          - service: light.turn_off
+            entity_id: light.hallway
+          - service: light.turn_off
+            entity_id: light.terrace
+      # Mini Remote Diane C
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 33333333}}'
+        sequence:
+          - service: alarm_control_panel.alarm_arm_away
+            entity_id: alarm_control_panel.alarm
+      # Mini Remote Diane D
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 44444444}}'
+        sequence:
+          - service: alarm_control_panel.alarm_disarm
+            entity_id: alarm_control_panel.alarm
+      # Mini Remote Kenneth A
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 55555555}}'
+        sequence:
+          - service: switch.turn_on
+            entity_id: switch.entrance_ceiling
+          - service: light.turn_on
+            entity_id: light.hallway
+          - service: light.turn_on
+            entity_id: light.terrace
+      # Mini Remote Kenneth B
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 66666666}}'
+        sequence:
+          - service: switch.turn_off
+            entity_id: switch.entrance_ceiling
+          - service: light.turn_off
+            entity_id: light.hallway
+          - service: light.turn_off
+            entity_id: light.terrace
+      # Mini Remote Kenneth C
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 77777777}}'
+        sequence:
+          - service: alarm_control_panel.alarm_arm_away
+            entity_id: alarm_control_panel.alarm
+      # Mini Remote Kenneth D
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 88888888}}'
+        sequence:
+          - service: alarm_control_panel.alarm_disarm
+            entity_id: alarm_control_panel.alarm
+      # Fart Button
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 99999999}}'
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'fan/set'
+              payload: "on"
+      # Black Button (Beer)
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 10101010}}'
+        sequence:
+          - service: script.alexa_tts_message
+            data:
+              message: 'Would you like a little beer?'
+      # White Button (Wine)
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 11001100}}'
+        sequence:
+          - service: script.alexa_tts_message
+            data:
+              message: 'Would you like a little glass of wine?'
+      # Red Button (Dinner is ready)
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.payload_json.value == 12121212}}'
+        sequence:
+          - service: script.alexa_tts_message
+            data:
+              message: 'Dinner is ready'
+      #default:
+

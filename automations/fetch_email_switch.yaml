@@ -1,32 +1,31 @@
-- alias: 'Fetch Kenneth Email Switch'
-  initial_state: true
+- alias: 'Fetch Email Switch'
+  initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
-      id: fetch_email
-      event: 1002
+      id: hood
   action:
-    - service: mqtt.publish
-      data:
-        topic: 'shuttlemail/kenneth'
-        payload: 'get_mail_kenneth'
-        retain: false
-        qos: 0
-
-
-- alias: 'Fetch Diane Email Switch'
-  initial_state: true
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: fetch_email
-      event: 2002
-  action:
-    - service: mqtt.publish
-      data:
-        topic: 'shuttlemail/diane'
-        payload: 'get_mail_diane'
-        retain: false
-        qos: 0
+    - choose:
+      # ON
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'shuttlemail/kenneth'
+              payload: 'get_mail_kenneth'
+              retain: false
+              qos: 0
+      # OFF
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2002 }}"
+        sequence:
+          - service: mqtt.publish
+            data:
+              topic: 'shuttlemail/diane'
+              payload: 'get_mail_diane'
+              retain: false
+              qos: 0

@@ -1,43 +1,33 @@
-- alias: 'Restart HA'
-  initial_state: true
+- alias: 'HA Dev Dimmer'
+  initial_state: 'on'
   trigger:
     platform: event
     event_type: deconz_event
     event_data:
       id: ha_dev_control
-      event: 1001
   action:
-    - service: homeassistant.restart
-     
-- alias: 'Reload Scripts'
-  initial_state: true
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: ha_dev_control
-      event: 2001
-  action:
-    - service: script.reload
-    
-- alias: 'Refresh Deconz'
-  initial_state: true
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: ha_dev_control
-      event: 3001
-  action:
-    - service: deconz.device_refresh
-    
-- alias: 'Reload Automations'
-  initial_state: true
-  trigger:
-    platform: event
-    event_type: deconz_event
-    event_data:
-      id: ha_dev_control
-      event: 4001
-  action:
-    - service: automation.reload
+    - choose:
+      # Long ON = Restart HA
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 1001 }}"
+        sequence:
+          - service: homeassistant.restart
+      # Long Increase = Reload scripts
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 2001 }}"
+        sequence:
+          - service: script.reload
+      # Long Decrease = Deconz device reload
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 3001 }}"
+        sequence:
+          - service: deconz.device_refresh
+      # Long OFF = Reload automations
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.event.data.event == 4001 }}"
+        sequence:
+          - service: automation.reload
