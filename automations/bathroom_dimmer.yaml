@@ -56,9 +56,7 @@
       # Stop increase/decrease
       - conditions:
           - condition: template
-            value_template: > 
-              {{ trigger.event.data.event == 2003 or
-                 trigger.event.data.event == 3003 }}
+            value_template: "{{ trigger.event.data.event in ( 2003, 3003 ) }}"
         sequence:
           - service: deconz.configure
             data:
