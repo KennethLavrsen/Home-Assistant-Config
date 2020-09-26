@@ -5,7 +5,7 @@
       entity_id: binary_sensor.smoke_smszb_120
       to: "on"
   action:
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         title: "Smoke Detected"
         message: "Smoke in the utility room"

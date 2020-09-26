@@ -12,14 +12,17 @@
       from: 'off'
       to: 'on'
   action:
+    - service: timer.cancel
+      entity_id: timer.office_light
+    - condition: state
+      entity_id: light.computer
+      state: 'off'
     - service: light.turn_on
       data:
         entity_id:
           - light.computer
           - light.makeup
         brightness_pct: 100
-    - service: timer.cancel
-      entity_id: timer.office_light
       
 - alias: 'Office light on morning extra' 
   initial_state: true

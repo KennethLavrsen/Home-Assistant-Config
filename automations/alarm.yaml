@@ -131,7 +131,7 @@
         topic: "alarm/alarmmode"
         payload: "triggered"
         retain: true
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         title: "The Alarm System has been triggered"
         message: "A window or door has been opened"
@@ -187,7 +187,9 @@
     condition: or
     conditions:
       condition: template
-      value_template: "{{ trigger.payload == 'aaaaaaaa' or trigger.payload == 'bbbbbbbb' or trigger.payload == 'cccccccc' or trigger.payload == 'dddddddd' }}"
+      value_template: !secret nfc_alarm_values
+      #in secerets we define nfc_alarm_values: "{{ trigger.payload in ['aaaaaaaa', 'bbbbbbbb', 'cccccccc', 'dddddddd'] }}"
+
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.alarm
@@ -227,3 +229,4 @@
       data:
         entity_id: timer.indoor_motion_sense
         duration: '00:03:00'
+        

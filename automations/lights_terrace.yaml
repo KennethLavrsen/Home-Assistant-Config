@@ -114,7 +114,7 @@
       above: 25
   condition:
     - condition: time
-      after: '07:00:00'
+      after: '03:00:00'
       before: '15:00:00'
   action:
     - service: light.turn_off

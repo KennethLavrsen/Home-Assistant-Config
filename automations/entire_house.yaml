@@ -4,7 +4,7 @@
     platform: event
     event_type: deconz_event
     event_data:
-      id: hood
+      id: entire_house
   action:
     - choose:
       # ON

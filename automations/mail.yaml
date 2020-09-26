@@ -5,7 +5,7 @@
     topic: mailserver/stateless
     payload: 'on'
   action:
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         title: "Mail in the mailbox"
         message: "Mail arrived {{ now().strftime(\"%d-%m-%y %H:%M:%H\") }}"

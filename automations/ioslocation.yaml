@@ -15,8 +15,6 @@
           type: announce
         message: >
           {{ trigger.to_state.name }} arriving at {{ trigger.to_state.state }}
-      # message: >
-      #   {{ trigger.entity_id.attributes.friendly_name }} is arriving at {{ trigger.zone }}
 
       
 - alias: Notify Tester Leaves Zone
@@ -32,8 +30,6 @@
           type: announce
         message: >
           {{ trigger.to_state.name }} leaving {{ trigger.from_state.state }}
-      # message: >
-      #   {{ trigger.entity_id.attributes.friendly_name }} is leaving {{ trigger.zone }}
 
 
 - alias: Notify When Someone Enters Zone
@@ -114,7 +110,7 @@
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.alarm
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         title: "Kenneth registered to be home"
         message: "Kenneth is arriving home"
@@ -146,7 +142,7 @@
   action:
     - service: alarm_control_panel.alarm_disarm
       entity_id: alarm_control_panel.alarm
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         title: "Diane arrived home"
         message: "Diane arrived home"
@@ -186,7 +182,7 @@
       entity_id: input_boolean.announce_someone
       state: 'on'
   action:
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         title: "Diane is leaving work"
         message: "Diane is leaving work"
@@ -196,5 +192,6 @@
     - service: script.alexa_tts_message
       data:
         message: 'Diane is leaving work. Remember to empty the dishwasher'
+
 
 

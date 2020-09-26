@@ -1,0 +1,85 @@
+# Hallway auto lights
+
+- alias: 'Hallway motion detected'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.hallway_motion
+      to: 'on'
+  action:
+    - service: timer.cancel
+      entity_id: timer.hallway_light
+    - choose:
+      #night mode 10%
+      #If it is night and dark, and light is off in living room and bedroom ceiling
+      - conditions:
+          - condition: state
+            entity_id: light.hallway
+            state: 'off'
+          - condition: time
+            after: '06:00:00'
+            before: '08:00:00'
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.hallway
+              brightness_pct: 30
+      #normal mode 100% - this only runs if nightmode did not run
+      - conditions:
+          - condition: state
+            entity_id: light.hallway
+            state: 'off'
+          - condition: time
+            after: '08:00:00'
+            before: '23:59:00'
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.hallway
+              brightness_pct: 55
+      #Late night
+      - conditions:
+          - condition: state
+            entity_id: light.hallway
+            state: 'off'
+          - condition: time
+            after: '00:00:00'
+            before: '01:00:00'
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id:
+                - light.hallway
+              brightness_pct: 8
+
+              
+- alias: 'Hallway motion start timer' 
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.hallway_motion
+      to: 'off'
+  action:
+    - service: timer.start
+      data:
+        entity_id: timer.hallway_light
+        duration: '00:02:00'
+    
+- alias: 'Hallway light off' 
+  initial_state: true
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.hallway_light
+  condition:
+    - condition: state
+      entity_id: light.hallway
+      state: 'on'
+  action:
+    - service: light.turn_off
+      data:
+        entity_id:
+          - light.hallway

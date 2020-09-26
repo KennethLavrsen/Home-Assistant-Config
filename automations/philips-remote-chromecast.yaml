@@ -37,7 +37,7 @@
           - condition: template
             value_template: "{{ trigger.event.data.event == 3002 }}"
         sequence:
-          - service: media_player.volume_up
+          - service: media_player.volume_down
             entity_id: media_player.chromecast_living_room  
       # Turn Off Anything
       - conditions:

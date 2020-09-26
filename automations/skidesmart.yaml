@@ -8,3 +8,16 @@
       event: 1002
   action:
     - service: script.skide_smart
+
+- alias: 'Diane Birthday'
+  initial_state: true
+  trigger:
+    - platform: time
+      at: "00:00:00"
+  condition:
+    condition: template
+    value_template: '{{ now().strftime("%m-%d") == "08-16" }}'
+  action:
+    - service: script.alexa_tts_message
+      data:
+        message: "Attention, today is Diane's Birthday. Happy birthday Diane"

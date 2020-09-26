@@ -7,4 +7,19 @@
     data_template:
       topic: 'bedroom-ventilator/speed/set'
       retain: false
-      payload: "{{ states('input_number.humidifier_rising') | int }}"
+      payload: "{{ states('input_number.bedroom_ventilator_speed') | int }}"
+      
+ #This automation script runs when a value is received via MQTT topic bedroom-ventilator/speed/state
+ #It sets the value slider on the GUI.
+- alias: Set bedroom ventilator slider
+  trigger:
+    platform: mqtt
+    topic: 'bedroom-ventilator/speed/state'
+  condition:
+    condition: template
+    value_template: "{{ ( states('input_number.bedroom_ventilator_speed') | int  ) != ( trigger.payload | int ) }}"
+  action:
+    service: input_number.set_value
+    data_template:
+      entity_id: input_number.bedroom_ventilator_speed
+      value: "{{ trigger.payload }}"
