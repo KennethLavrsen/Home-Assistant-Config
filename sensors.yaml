@@ -1,8 +1,5 @@
 # Sensors
 
-# Weather prediction
-- platform: yr
-
 - platform: uptime
   name: Home Assistant Uptime
   unit_of_measurement: minutes
@@ -168,7 +165,6 @@
     kitchen_temperature_corrected:
       friendly_name: Kitchen Temperature Corrected
       unit_of_measurement: "°C"
-      entity_id: sensor.kitchen_temperature
       value_template: "{{ (states('sensor.kitchen_temperature')|float + 3) |round(1) }}"
       
 - platform: template
@@ -176,7 +172,6 @@
     living_room_temperature_corrected:
       friendly_name: Living Room Temperature Corrected
       unit_of_measurement: "°C"
-      entity_id: sensor.living_room_temperature
       value_template: "{{ (states('sensor.living_room_temperature')|float + 1.4) |round(1) }}"
 
 - platform: template
@@ -184,7 +179,6 @@
     hallway_temperature_corrected:
       friendly_name: Hallway Temperature Corrected
       unit_of_measurement: "°C"
-      entity_id: sensor.hallway_temperature
       value_template: "{{ (states('sensor.hallway_temperature')|float + 0.9) |round(1) }}"
 
 - platform: template
@@ -192,7 +186,6 @@
     utility_room_temperature_corrected:
       friendly_name: Utility Room Temperature Corrected
       unit_of_measurement: "°C"
-      entity_id: sensor.utility_room_temperature
       value_template: "{{ (states('sensor.utility_room_temperature')|float + 1) |round(1)}}"
 
 - platform: template
@@ -200,28 +193,22 @@
     workshop_temperature_corrected:
       friendly_name: Workshop Temperature Corrected
       unit_of_measurement: "°C"
-      entity_id: sensor.workshop_temperature
       value_template: "{{ (states('sensor.workshop_temperature')|float + 1.8) |round(1)}}"
       
 - platform: template
   sensors:
     kenneth_haapp_accuracy:
       friendly_name: "Kenneth HA GPS Accuracy"
-      entity_id: device_tracker.kenneths_iphone_7
-      value_template: "{{ state_attr('device_tracker.kenneths_iphone_7', 'gps_accuracy') }}"
-      unit_of_measurement: meters
-      
-- platform: template
-  sensors:
-    kenneth_owntracks_accuracy:
-      friendly_name: "Kenneth Owntracks GPS Accuracy"
-      entity_id: device_tracker.kjl_iphone7
-      value_template: "{{ state_attr('device_tracker.kjl_iphone7', 'gps_accuracy') }}"
+      value_template: "{{ state_attr('device_tracker.kenneth_s_iphone_se', 'gps_accuracy') }}"
       unit_of_measurement: meters
       
 - platform: otp
   name: Google OTP
   token: !secret google_otppwd
+  
+- platform: otp
+  name: Amazon OTP
+  token: !secret amazon_otppwd
   
 
 - platform: mqtt
@@ -259,3 +246,14 @@
   state_topic: "tele/blitzwolf/SENSOR"
   value_template: '{{ value_json["ENERGY"]["Factor"] }}'
 
+- platform: systemmonitor
+  resources: 
+  - type: disk_use_percent
+    arg: /
+  - type: memory_use_percent
+  - type: processor_use
+  - type: load_1m
+  - type: network_in
+    arg: eno1
+  - type: network_out
+    arg: eno1

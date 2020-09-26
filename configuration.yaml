@@ -27,21 +27,30 @@ config:
 mobile_app:
     
 logger:
-  default: error
+#  default: error
   logs:
     homeassistant.components.mqtt: error
     homeassistant.components.http.ban: warning
-#    homeassistant.components.zeroconf: debug
-#    pyipp: debug
-#    alexa_media.helpers: debug
-#    aiounifi: debug
-#    homeassistant.components.unifi: debug
-#    bellows: debug
-#    zigpy: debug
-#    homeassistant.components.zha: debug
-#    homeassistant.components.zwave: info
+  default: warning
+  #default: info
+# logs:
+#   homeassistant.components.mqtt: info
+#   homeassistant.components.http.ban: warning
+#   homeassistant.components.deconz: debug
+#   homeassistant.components.zeroconf: debug
+#   pyipp: debug
+#   alexa_media.helpers: debug
+#   aiounifi: debug
+#   homeassistant.components.unifi: debug
+#   bellows: debug
+#   zigpy: debug
+#   homeassistant.components.zha: debug
+#   homeassistant.components.zwave: info
+
+
 
 system_health:
+
 
 updater:
   # Optional, allows Home Assistant developers to focus on popular components.
@@ -51,7 +60,6 @@ updater:
 discovery:
   ignore:
     - apple_tv
-    - kodi
 
 ssdp:
 
@@ -96,23 +104,24 @@ recorder:
       - sensor.byparken
       - sensor.home_assistant_uptime
       - sensor.google_otp
+      - sensor.amazon_otp
       - binary_sensor.amcrest_1_motion_detected
     event_types:
       - service_removed
-      - service_executed
+#      - service_executed
       - platform_discovered
-      - homeassistant_start
-      - homeassistant_stop      
+#      - homeassistant_start
+#      - homeassistant_stop      
       - feedreader
       - service_registered
-      - call_service
+#      - call_service
       - component_loaded
       - logbook_entry
       - system_log_event
-      - automation_triggered
-      - script_started
+#      - automation_triggered
+#      - script_started
       - timer_out_of_sync
-      - alexa_media_nnnnn@nnnnn.com
+      - !secret alexa_media_entity
 
 # View all events in a logbook
 logbook:
@@ -127,14 +136,10 @@ sun:
 
 zwave:
 #  usb_path: /dev/ttyACM1
-  usb_path: /dev/serial/by-id/usb-0673_0315-if00
+  usb_path: !secret zwave_usb_path
   network_key: !secret zwave_network_key
 
 ios:
-
-ifttt:
-  key: !secret ifttt_key
-
 
 mqtt:
   broker: localhost
@@ -144,6 +149,7 @@ mqtt:
 alarm_control_panel:
   - platform: manual
     name: alarm
+    #code: !secret alarm_code
     trigger_time: 300
     delay_time: 45
     arming_time: 45
@@ -155,18 +161,19 @@ alarm_control_panel:
     armed_away:
       arming_time: 45
 
-  - platform: manual
-    name: testalarm
-    trigger_time: 30
-    delay_time: 15
-    arming_time: 15
-    code_arm_required: false
-    disarmed:
-      trigger_time: 0
-    armed_home:
-      arming_time: 15
-    armed_away:
-      arming_time: 15
+#  - platform: manual
+#    name: testalarm
+#    #code: !secret alarm_code
+#    trigger_time: 30
+#    delay_time: 15
+#    arming_time: 15
+#    code_arm_required: false
+#    disarmed:
+#      trigger_time: 0
+#    armed_home:
+#      arming_time: 15
+#    armed_away:
+#      arming_time: 15
 
 
 # Text to speech
@@ -174,12 +181,12 @@ tts:
   - platform: google_translate
     base_url: !secret base_url
     service_name: google_say
-
+        
 notify:
   - name: idevices
     platform: group
     services:
-      - service: mobile_app_kenneth_s_iphone_7
+      - service: mobile_app_kenneth_s_iphone_se
       - service: mobile_app_kenneth_s_ipad_pro
       - service: mobile_app_diane_s_privat
       - service: mobile_app_kenneths_ipad_11
@@ -189,21 +196,23 @@ device_tracker:
     devices:
       testtracker: 'location/testtracker'
 
+
 person:
   - name: Diane
     id: Diane
     device_trackers:
-      - device_tracker.dianes_privat
+      - device_tracker.diane_s_privat
       - device_tracker.dianes_privat_unifi
   - name: Kenneth
     id: Kenneth
     device_trackers:
-      - device_tracker.kenneths_iphone_7
-      - device_tracker.kenneth_iphone_7_unifi
+      - device_tracker.kenneth_s_iphone_se
+      - device_tracker.kenneth_iphone_se_unifi
   - name: Tester
     id: Tester
     device_trackers:
       - device_tracker.testtracker
+    
 
 # Track calendar false is needed to prevent Hass from overwriting the google_calendar.yaml file.        
 google:

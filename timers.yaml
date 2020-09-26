@@ -35,6 +35,9 @@ workshop_light:
 utility_room_light:
   duration: '00:02:00'
   
+hallway_light:
+  duration: '00:02:00'
+  
 camera_rotation_reset:
   duration: '00:02:00'
   

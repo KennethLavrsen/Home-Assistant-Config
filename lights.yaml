@@ -6,13 +6,6 @@
   state_topic: "magicmirror/state"
   payload_on: "on"
   payload_off: "off"
-  
-- platform: mqtt
-  name: Hallway
-  command_topic: "hallway/set"
-  state_topic: "hallway/state"
-  payload_on: "on"
-  payload_off: "off"
 
 # Switches that control a light are being created as lights
 # This is mainly to have Google Home and Alexa to treat them as lights 
