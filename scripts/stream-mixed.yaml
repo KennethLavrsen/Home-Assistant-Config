@@ -12,13 +12,13 @@ announce_mixed_google_stream:
       data:
         entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.office_speaker, media_player.bathroom_speaker, media_player.workshop_speaker, media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
     - service: camera.play_stream
-      data_template:
+      data:
         entity_id: "{{ cameraentity }}"
         media_player: media_player.living_room_display, media_player.bedroom_display, media_player.kitchen_display
 #    - delay:
 #        milliseconds: 1000
     - service: media_player.play_media
-      data_template:
+      data:
         entity_id: media_player.office_speaker, media_player.hallway_speaker, media_player.office_speaker, media_player.bathroom_speaker, media_player.workshop_speaker
         media_content_id: http://192.168.1.15:8123/local/{{ audiofile }}
         media_content_type: audio/mp3

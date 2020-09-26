@@ -1,6 +1,6 @@
 location_update_kenneth:
   sequence:
-    - service: notify.mobile_app_kenneth_s_iphone_7
+    - service: notify.mobile_app_kenneth_s_iphone_se
       data:
         message: "request_location_update"
         

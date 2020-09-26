@@ -7,10 +7,10 @@ notify_ios_text:
     - condition: or
       conditions:
       - condition: state
-        entity_id: device_tracker.kenneths_iphone_7
+        entity_id: device_tracker.kenneth_s_iphone_se
         state: 'not_home'
       - condition: state
-        entity_id: device_tracker.dianes_privat
+        entity_id: device_tracker.diane_s_privat
         state: 'not_home'
     - service: notify.idevices
       data_template:
@@ -36,7 +36,7 @@ notify_ios_stream_noone_home:
     - condition: or
       conditions:
       - condition: state
-        entity_id: device_tracker.kenneths_iphone_7
+        entity_id: device_tracker.kenneth_s_iphone_se
         state: 'not_home'
       - condition: state
         entity_id: device_tracker.dianes_privat

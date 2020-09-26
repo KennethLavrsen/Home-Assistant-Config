@@ -1,4 +1,3 @@
-# Content ID altered for Github version
 activate_alexa_actionable_notification:
   description: 'Activates an actionable notification on a specific echo device'
   fields:
@@ -17,4 +16,4 @@ activate_alexa_actionable_notification:
       data_template:
         entity_id: "{{ alexa_device }}"
         media_content_type: skill
-        media_content_id: amzn1.ask.skill.2f2f2f2f-3c3c-1234-1a2a-aa1122bbccd3
+        media_content_id: !secret media_content_id
