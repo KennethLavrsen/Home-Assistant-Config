@@ -1,5 +1,8 @@
 - alias: 'Neopixel Box'
   initial_state: true
+  mode: queued
+  max: 8
+  max_exceeded: silent
   trigger:
     - platform: state
       entity_id:
@@ -24,7 +27,7 @@
       payload: 'Connected'
   action:
     - delay:
-        seconds: 1
+        milliseconds: 200
     - service: mqtt.publish
       data:
         topic: "neopixelbox/led/0"

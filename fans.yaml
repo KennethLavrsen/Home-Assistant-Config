@@ -31,7 +31,6 @@
   payload_medium_speed: "50"
   payload_low_speed: "20"
   speeds:
-    - "off"
     - low
     - medium
     - high

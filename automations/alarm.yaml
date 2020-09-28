@@ -209,6 +209,9 @@
 
 - alias: 'Start indoor motion sensor timer'
   initial_state: true
+  mode: queued
+  max: 8
+  max_exceeded: silent
   trigger:
     - platform: state
       entity_id:
